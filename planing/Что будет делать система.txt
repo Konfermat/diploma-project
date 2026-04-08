@@ -6,32 +6,13 @@ hyperskill клон или конструктор тестов
     Профиль юзера будет хранить информацию о нем и его достижениях.
     Визуализация сайта в двух темах минимум. Темная и светлая.
     
+Референсы:
+    https://hyperskill.org/
+    https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Server-side/Django/Models
 
 Стек: Django/Flask + Front React + PostgreSQL
 
+цель:
+сделать MVP
+    Начну с реализации тестов?
 
-Примерная БД
-
-Юзер
-    id
-    name
-
-Тест
-    id
-    список вопросов
-
-Вопрос
-    id
-    id теста
-    содержание
-    варианты
-    правильные_ответы
-
-вариант
-    id
-    id_вопроса
-    содержание
-
-правильный вариант
-    id
-    id_вопроса

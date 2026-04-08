@@ -1,0 +1,45 @@
+Примерное начало БД
+
+https://practicum.yandex.ru/blog/chto-takoe-er-diagramma/
+
+User
+    id
+    name
+    created_at
+
+Test
+    id
+    name
+    description
+    created_by
+    created_at
+
+Question
+    id
+    test_id
+    description
+
+Option
+    id
+    question_id
+    description
+    is_correct
+
+Result
+    id
+    user_id
+    test_id
+    score
+    completed_at
+
+UserAttempt
+    id
+    user_id
+    test_id
+    score
+
+UserAnswer
+    id
+    attempt_id
+    question_id
+    option_id

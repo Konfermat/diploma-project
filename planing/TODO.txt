@@ -1,0 +1,3 @@
+https://app.diagrams.net/ # онлайн
+https://github.com/jgraph/drawio-desktop/releases/tag/v29.6.6 # скачать на комп
+Рассмотреть подключение Obsidian к проекту
