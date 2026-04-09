@@ -11,12 +11,12 @@ Test
     id
     name
     description
-    created_by
+    created_by #many to many (User)
     created_at
 
 Question
     id
-    test_id
+    test_id #optional many to one (Test) 
     description
 
 Option

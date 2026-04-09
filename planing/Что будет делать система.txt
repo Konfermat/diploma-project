@@ -10,9 +10,9 @@ hyperskill клон или конструктор тестов
     https://hyperskill.org/
     https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Server-side/Django/Models
 
-Стек: Django/Flask + Front React + PostgreSQL
+Стек: Django + Front React + (PostgreSQL/sqlite?)
 
 цель:
 сделать MVP
-    Начну с реализации тестов?
+    Начну с реализации бд для тестов?
 
