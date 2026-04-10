@@ -1,8 +1,5 @@
-https://app.diagrams.net/ # онлайн
-https://github.com/jgraph/drawio-desktop/releases/tag/v29.6.6 # скачать на комп?
+draw.io # онлайн
 Рассмотреть подключение Obsidian к проекту
 
-Спроси про тему диплома
-    проверьте БД
 Исправь БД
  
