@@ -12,6 +12,22 @@ from django.contrib.auth.models import AbstractUser
 # https://docs.djangoproject.com/en/6.0/topics/db/examples/many_to_many/
 # and many to many (ManyToManyField).
 
+'''
+topic
+    py
+    ai
+    ...
+difficulty
+    name
+        beginnter
+        intermidate
+        PROTECT
+
+'''
+# TODO 
+# ОБРАТИ ВНИМАНИЕ НА РЕФЫ САЙТА. В НИХ ПОДСКАЗКА. ПЕРЕДЕЛАЙ БД И НАРИСУЙ СХЕМУ.
+
+
 class User(AbstractUser):
     name = models.CharField(max_length=150)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -57,21 +73,18 @@ class Option(models.Model):
     def __str__(self):
         return self.name    
 
-class Answer(models.Model):
-    # many to one(Option)
-    option = models.ForeignKey('Option', on_delete=models.CASCADE)
-    def __str__(self):
-        return self.name    
-
 class Attempt(models.Model):
     # many to one (User)
     user = models.ForeignKey('User', on_delete=models.CASCADE)
-    # many to one (Answer)
-    answer = models.ForeignKey('Answer', on_delete=models.CASCADE)
+    # many to one (Option)
+    option = models.ForeignKey('Option', on_delete=models.CASCADE)
     score = models.IntegerField(default=0)
     completed_at = models.DateTimeField(auto_now_add=True)
     def __str__(self):
-        return self.name    
+        return self.name  
+
+  
+
 
 # TODO ЗАКОНЧИ ЛОГИКУ
 # НИЖЕ ИСПРАВЛЕНЫЫЙ ПРИМЕР ОТ ГУГЛА
