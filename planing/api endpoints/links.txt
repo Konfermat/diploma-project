@@ -1,3 +1,7 @@
 https://habr.com/ru/articles/947410/
 
 ://name
+
+1) Проектирование endpoints
+2) Создание wireframes (Низкодетализированные макеты)
+3) Описание UserStories
