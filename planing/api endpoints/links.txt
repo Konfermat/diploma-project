@@ -1,6 +1,62 @@
-https://habr.com/ru/articles/947410/
+https://habr.com/ru/articles/947410/ # how to api
+https://habr.com/ru/articles/769384/ # api refs
+https://habr.com/ru/companies/yandex_praktikum/articles/561696/ # how to drf p1
+https://habr.com/ru/companies/yandex_praktikum/articles/562050/ # how to drf p2
+https://habr.com/ru/companies/yandex_praktikum/articles/598349/ # how to drf p3
+https://github.com/stasyao?tab=repositories&q=drf&type=&language=&sort= # explore
 
-://name
+########################################################################################################################
+# httр://api.weather.com/data?city=Москва&key=ВашAPIКлюч.
+
+DB
+api end p
+
+
+api endpoints:
+    diploma-project/ # стартовая страница
+        Приветсвие
+        Меню навигации под header
+        по горизонтали список 5 популярных тем по изучению с активным элементом
+            При нажатии на элемент список курсов меняется в зависимости от выбранной темы
+        в body список курсов сортированные по популярности в количестве 6.
+        под списком будет кнопка с которая ведет на /courses/
+
+    diploma-project/courses/ # по умолчанию выбран "Самые популярные"
+        кнопки критерий соритровок (по темам, просто все сразу, Самые популярные (6 штук))
+
+    diploma-project/courses?category=<name>
+        кнопки критерий сортировок (по темам, просто все сразу, Самые популярные (6 штук))
+        список курсов по выбранной теме (и по рейтингу) в колличестве 20(2 на 10)
+            внизу кнопка (еще?) Добавляет еще 20 (при смене темы кол макс списка курсов для отображения не меняется)            
+
+    diploma-project/courses/<url slugname>
+        Название курса
+        краткое Описание
+        автор
+        список тем затронутых в курсе
+        кратнкая инструкция
+        похожие курсы
+        рейтинг
+        посмотреть отзывы
+        if not logged_in
+            Подробнее о курсе (/register?track=<cource number>)
+            После регистрации записывает автоматически на курс и отправляет на study-plan
+        if logged and not cource_is_selected:
+            Выбрать курс(назначает профилю текущий курс и отправляет на /study-plan)
+        if logged and cource_is_selected:
+            Продолжить курс(/study-plan)
+    
+    diploma-project/courses/study-plan/
+        имя курса
+        шкала прогресса
+        список глав с чек боксами отображающие прогресс
+            переход на одну из них это переход к (/learn/step/<number>)
+        одна из глав будет выделена для отображения последней точки прогресса
+            главу можно пропустить, а можно Продолжить
+
+    diploma-project/learn/step/<number>
+        материал для изучения или ссылка на тест
+
 TODO
 1) Проектирование endpoints
 2) Создание wireframes (Низкодетализированные макеты)
