@@ -5,6 +5,7 @@ https://habr.com/ru/companies/yandex_praktikum/articles/562050/ # how to drf p2
 https://habr.com/ru/companies/yandex_praktikum/articles/598349/ # how to drf p3
 https://github.com/stasyao?tab=repositories&q=drf&type=&language=&sort= # explore
 https://qna.habr.com/q/1057132 # what is endpoint
+https://docs.kraken.com/api/docs/rest-api/add-order # example?
 
 ########################################################################################################################
 
