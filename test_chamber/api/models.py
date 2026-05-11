@@ -55,10 +55,11 @@ class Attempt(models.Model):
 
 class UserAnswer(models.Model):
     attempt = models.ForeignKey(Attempt, on_delete=models.CASCADE)
-    # many to one (Option) UserAnswer may have many options
     option = models.ForeignKey(Option, on_delete=models.CASCADE)
+
     def __str__(self):
-        return f'попытка: {self.attempt}, вопрос: {self.question},  выбранные варианты: {self.selected_option}'
+        return f'Попытка: {self.attempt.id}, Вопрос: {self.option.question.description[:30]}...'
+
 
 
   

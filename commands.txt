@@ -1,0 +1,9 @@
+django-admin startproject test-chamber # создать приложение
+
+py manage.py startapp app-name
+py manage.py makemigrations
+py manage.py migrate
+py manage.py runserver
+# python manage.py runserver # стал работать нормально
+
+python manage.py check # проверка на наличие ошибок

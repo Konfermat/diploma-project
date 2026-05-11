@@ -1,0 +1,81 @@
+https://ilyachch.gitbook.io/django-rest-framework-russian-documentation
+Как пошагово написать программу на django-rest?
+
+    1) создаешь проект
+        django-admin startproject project-name # создать проект
+
+    2) создаешь приложение
+        python manage.py startapp app-name
+
+    3) регистрируешь его в INSTALLED_APPS
+        INSTALLED_APPS = [
+            'django.contrib.admin',
+            'django.contrib.auth',
+            'django.contrib.contenttypes',
+            'django.contrib.sessions',
+            'django.contrib.messages',
+            'django.contrib.staticfiles',
+            'app-name',
+        ] 
+    5) Описание моделей (Models)
+        Пропиши модели(models.py) в приложении
+        Если меняешь модели — всегда делай:
+            python manage.py makemigrations
+            python manage.py migrate    
+
+    6) Создание сериализаторов (Serializers)
+        Создай файл api/serializers.py. 
+        Сериализатор превращает объекты Python (из базы) в JSON (для фронтенда) и обратно.
+        Пример:
+            from rest_framework import serializers
+            from .models import Test, Question
+
+            class TestSerializer(serializers.ModelSerializer):
+                class Meta:
+                    model = Test
+                    fields = '__all__' # Или перечисли ['id', 'name', 'description']    
+
+    7) Написание представлений (Views)
+    В api/views.py ты пишешь логику: что именно отдавать. 
+    Самый простой путь — использовать ModelViewSet (он сразу дает и список, и создание, и удаление).
+    Пример:
+        from rest_framework import viewsets
+        from .models import Test
+        from .serializers import TestSerializer
+
+        class TestViewSet(viewsets.ModelViewSet):
+            queryset = Test.objects.all()
+            serializer_class = TestSerializer
+    8) Настройка маршрутов (URLs)
+    Нужно связать твои Views с адресами.
+    В api/urls.py (создай его)
+    Пример:
+        from django.urls import path, include
+        from rest_framework.routers import DefaultRouter
+        from .views import TestViewSet
+
+        router = DefaultRouter()
+        router.register(r'tests', TestViewSet) # Теперь API будет по адресу /api/tests/
+
+        urlpatterns = [
+            path('', include(router.urls)),
+        ]
+    В основном project-name/urls.py
+    Пример:
+        from django.urls import path, include
+
+        urlpatterns = [
+            path('admin/', admin.site.urls),
+            path('api/', include('api.urls')), # Подключаем URLы приложения
+        ]
+
+    9) ПроверкаЗапускай сервер: python manage.py runserver.
+    Заходи по адресу http://127.0.0. 
+    Ты увидишь красивый интерфейс DRF, где можно смотреть и добавлять тесты.
+    
+    10) Добавление логики (Permissions)
+    Позже тебе нужно будет ограничить доступ (например, чтобы тесты создавал только админ). 
+    Это делается в views.py:
+        from rest_framework import permissions
+
+        permission_classes = [permissions.IsAuthenticatedOrReadOnly]        
