@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-# Что если все это по пробовать упростить?
+
+# Переработать
+
 class User(AbstractUser):
     created_at = models.DateTimeField(auto_now_add=True)
     def __str__(self):
