@@ -3,6 +3,7 @@
 py -m venv .venv
 pip install djangorestframework 
 pip freeze > "requirements.txt"
+pip install -r ./requirements.txt
 
 graph models command in django?
 https://www.youtube.com/watch?v=qzrE7cfc_3Q
@@ -32,8 +33,11 @@ https://www.lucidchart.com/pages/er-diagrams
             'core',  # ваше приложение
         ]
 
-pip install pygraphviz django-extensions
+pip install pygraphviz django-extensions pillow
 # Проверьте результат
     python -c "import pygraphviz; print(pygraphviz.__version__)"
     # если не покажет версию то гугли решение сам
 py manage.py graph_models core > models.dot
+
+django-admin startproject drf_course
+python manage.py startapp api
