@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ########################################################################
 ########################################################################
     # хз почему не работает через python -m venv .venv 
@@ -7,6 +8,14 @@
     pip freeze > "requirements.txt"
     django-admin startproject drf_cource
     python manage.py startapp api
+=======
+# хз почему не работает через python -m venv .venv 
+# если полезешь копаться то опять отвлечешься 
+py -m venv .venv
+pip install djangorestframework 
+pip freeze > "requirements.txt"
+pip install -r ./requirements.txt
+>>>>>>> d408294c427b438ecb945af90a33ed3f9e6670c8
 
 ########################################################################
     graph models command in django?
@@ -43,6 +52,7 @@
         # если не покажет версию то гугли решение сам
         py manage.py graph_models core > models.dot
 
+<<<<<<< HEAD
     Как сгенерировать схему БД?
         https://youtu.be/qzrE7cfc_3Q?si=gU3wftjKV6kdUOJq
         pip install pydot django-extensions
@@ -50,3 +60,13 @@
         python 
 
         
+=======
+pip install pygraphviz django-extensions pillow
+# Проверьте результат
+    python -c "import pygraphviz; print(pygraphviz.__version__)"
+    # если не покажет версию то гугли решение сам
+py manage.py graph_models core > models.dot
+
+django-admin startproject drf_course
+python manage.py startapp api
+>>>>>>> d408294c427b438ecb945af90a33ed3f9e6670c8
