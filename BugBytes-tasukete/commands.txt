@@ -1,39 +1,52 @@
-# хз почему не работает через python -m venv .venv 
-# если полезешь копаться то опять отвлечешься 
-py -m venv .venv
-pip install djangorestframework 
-pip freeze > "requirements.txt"
+########################################################################
+########################################################################
+    # хз почему не работает через python -m venv .venv 
+    # если полезешь копаться то опять отвлечешься 
+    py -m venv .venv
+    pip install djangorestframework pillow
+    pip freeze > "requirements.txt"
+    django-admin startproject drf_cource
+    python manage.py startapp api
 
-graph models command in django?
-https://www.youtube.com/watch?v=qzrE7cfc_3Q
-what is ER(entity relationship) diagram?
-https://www.lucidchart.com/pages/er-diagrams
+########################################################################
+    graph models command in django?
+    https://www.youtube.com/watch?v=qzrE7cfc_3Q
+    what is ER(entity relationship) diagram?
+    https://www.lucidchart.com/pages/er-diagrams
 
-# чтобы pygraphviz установился сделай это
-    # 1. Установка Graphviz
-        pygraphviz — это лишь оболочка (wrapper) для основной программы Graphviz, 
-        поэтому она не будет работать без нее.
-        Скачайте EXE-инсталлятор (например, 64-bit EXE installer) с официального сайта Graphviz.
-        Важно: Во время установки выберите опцию «Add Graphviz to the system PATH for all users» (или «for current user»). 
-        Это позволит системе видеть исполняемые файлы программы.
-    # 2. установи Visual Studio Build Tools !!! НЕ IDE !!!
-        В официальном установщике (Visual Studio Installer) 
-        выбери «Разработка классических приложений на C++»
-    # 3. Укажи пути к файлам в powershell следующим образом
-        pip install --config-settings="--global-option=build_ext" `
-            --config-settings="--global-option=-IC:\Program Files\Graphviz\include" `
-            --config-settings="--global-option=-LC:\Program Files\Graphviz\lib" `
-            pygraphviz
-# чтобы django-extensions работало сделай это
-    пропиши в settings.py
-        INSTALLED_APPS = [
-            ...
-            'django_extensions',
-            'core',  # ваше приложение
-        ]
+    # чтобы pygraphviz установился сделай это
+        # 1. Установка Graphviz
+            pygraphviz — это лишь оболочка (wrapper) для основной программы Graphviz, 
+            поэтому она не будет работать без нее.
+            Скачайте EXE-инсталлятор (например, 64-bit EXE installer) с официального сайта Graphviz.
+            Важно: Во время установки выберите опцию «Add Graphviz to the system PATH for all users» (или «for current user»). 
+            Это позволит системе видеть исполняемые файлы программы.
+        # 2. установи Visual Studio Build Tools !!! НЕ IDE !!!
+            В официальном установщике (Visual Studio Installer) 
+            выбери «Разработка классических приложений на C++»
+        # 3. Укажи пути к файлам в powershell следующим образом
+            pip install --config-settings="--global-option=build_ext" `
+                --config-settings="--global-option=-IC:\Program Files\Graphviz\include" `
+                --config-settings="--global-option=-LC:\Program Files\Graphviz\lib" `
+                pygraphviz
+    # чтобы django-extensions работало сделай это
+        пропиши в settings.py
+            INSTALLED_APPS = [
+                ...
+                'django_extensions',
+                'core',  # ваше приложение
+            ]
+        ah
+        pip install pygraphviz django-extensions
+        # Проверьте результат
+        python -c "import pygraphviz; print(pygraphviz.__version__)"
+        # если не покажет версию то гугли решение сам
+        py manage.py graph_models core > models.dot
 
-pip install pygraphviz django-extensions
-# Проверьте результат
-    python -c "import pygraphviz; print(pygraphviz.__version__)"
-    # если не покажет версию то гугли решение сам
-py manage.py graph_models core > models.dot
+    Как сгенерировать схему БД?
+        https://youtu.be/qzrE7cfc_3Q?si=gU3wftjKV6kdUOJq
+        pip install pydot django-extensions
+        установить в проект django_extensions зайдя в settings.py INSTALLED_APPS + "django_extensions"
+        python 
+
+        
