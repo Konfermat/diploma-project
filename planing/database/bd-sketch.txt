@@ -22,45 +22,20 @@ Role(в разработке)
     web front
     backend
 
-Cource(Курс)
-
-developer
-    topic 1
-        topic 1.1
-        topic 1.2
-        topic 1.n
-        text opt
-        test opt
-    topic 2
-    topic n
-        step == text or step == test
-
-object
-    id
-    type
-
-###
-
-Profile
-    id
-    isValid_list
-
-Topic
-    id
-    name
-
-Text
-    id
-    name
-        Переменные
-    content
-        это единица инфорации которая ...
-
-
-
 Test
-    id
-    student
-    study_object
 
-Тема
+User
+    Properties
+        isRegistered
+        isOwner
+        
+    Learning
+
+Course
+    Text
+    Test
+
+UserStatus
+    notRegistred
+    Registred
+
