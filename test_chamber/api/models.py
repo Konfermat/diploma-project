@@ -1,10 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
+courses/
+courses/<int:pk>
+
 Курс
     Теория
+        текст
     Тест
-    Результат
 
 Юзер
 
