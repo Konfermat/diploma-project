@@ -1,15 +1,50 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
+# api
+# courses list by most popular
 courses/
-courses/<int:pk>
+courses/page2/
 
-Курс
-    Теория
-        текст
-    Тест
+# courses list order by property (Difficulty, Topic, language, ...)
+courses/<str:pk>/
+courses/<str:pk>/page n/
 
-Юзер
+# list of courses by this author
+courses/<author id or name>/ # intro
+courses/<author id or name>/page n/
+
+# course # intro
+courses/<author id or name>/<course name or id>/ # intro
+courses/<author id or name>/<course name or id>/step 1/
+
+
+
+
+# list of all topics courses for header
+show_catalog=True
+    Catalog
+        Topic
+            Course
+                step
+                    Text or
+                    Test
+                
+
+# course_intro_page
+courses/<author id or name>/page
+
+
+Topic
+    id
+Course
+    id
+Step
+    id
+    content
+
+Test
+
 
 
 class User(AbstractUser):
