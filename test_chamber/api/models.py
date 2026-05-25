@@ -1,117 +1,82 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-# api
-# courses list by most popular
-courses/
-courses/page2/
-
-# courses list order by property (Difficulty, Topic, language, ...)
-courses/<str:pk>/
-courses/<str:pk>/page n/
-
-# list of courses by this author
-courses/<author id or name>/ # intro
-courses/<author id or name>/page n/
-
-# course # intro
-courses/<author id or name>/<course name or id>/ # intro
-courses/<author id or name>/<course name or id>/step 1/
-
-
-
-
-# list of all topics courses for header
-show_catalog=True
-    Catalog
-        Topic
-            Course
-                step
-                    Text or
-                    Test
-                
-
-# course_intro_page
-courses/<author id or name>/page
-
-
-Topic
-    id
-Course
-    id
-Step
-    id
-    content
-
-Test
-
-
-
 class User(AbstractUser):
     created_at = models.DateTimeField(auto_now_add=True)
+
     def __str__(self):
         return f'имя юзера: {self.username}'
 
-class Topic(models.Model):
-    name = models.CharField(max_length=50)
-    def __str__(self):
-        return f'название темы: {self.name}'     
+# --- БЛОК КУРСА ---
 
-class Difficulty(models.Model):
-    name = models.CharField(max_length=50)
-    def __str__(self):
-        return f'сложность: {self.name}'
-
-class Test(models.Model):
-    name = models.CharField(max_length=150)
-    description = models.TextField(max_length=500)
-    #many to many (User)
-    created_by = models.ManyToManyField('User')
+class Course(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    # many to optional one optional (Difficulty)
-    difficulty = models.ForeignKey('Difficulty', on_delete=models.SET_NULL, null=True)
-    is_published = models.BooleanField(default=False)
-    # many to one optional (Topic)
-    topic = models.ForeignKey('Topic', on_delete=models.SET_NULL, null=True)
+
     def __str__(self):
-        return f'название теста: {self.name}'
+        return self.title
+
+class Step(models.Model):
+    class StepType(models.TextChoices):
+        TEXT = 'TEXT', 'Текст'
+        TEST = 'TEST', 'Тест'
+
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='steps')
+    title = models.CharField(max_length=255)
+    step_type = models.CharField(max_length=10, choices=StepType.choices)
+    order = models.PositiveIntegerField(help_text="Порядковый номер шага в курсе")
+    text_content = models.TextField(blank=True, null=True)
+
+    class Meta:
+        ordering = ['order']
+        unique_together = ('course', 'order') 
+
+    def check(self):
+        # Защита от дурака: проверяем логику полей перед сохранением
+        if self.step_type == self.StepType.TEXT and not self.text_content:
+            raise ValidationError("Для текстового шага необходимо заполнить text_content.")
+        if self.step_type == self.StepType.TEST and self.text_content:
+            raise ValidationError("Тестовый шаг не должен содержать лекционный текст.")
+
+    def __str__(self):
+        return f"{self.course.title} - Шаг {self.order}: {self.title}"
+
+
+# --- БЛОК ТЕСТОВ ---
 
 class Question(models.Model):
-    # оne to many (Test)
-    test = models.ForeignKey('Test', on_delete=models.CASCADE, related_name='questions')
-    description = models.TextField(max_length=1000)
-    def __str__(self):
-        return f'вопрос: {self.description}'
+    step = models.ForeignKey(Step, on_delete=models.CASCADE, related_name='questions')
+    text = models.TextField(help_text="Текст вопроса")
 
-class Option(models.Model):
-    #many to one (Question)
-    question = models.ForeignKey('Question', on_delete=models.CASCADE)
-    description = models.TextField(max_length=500)
-    is_correct = models.BooleanField(default=False)
-    def __str__(self):
-        return f'вариант ответа: {self.description}'   
-
-class Attempt(models.Model):
-    user = models.ForeignKey('User', on_delete=models.CASCADE)
-    test = models.ForeignKey('Test', on_delete=models.CASCADE)
-    score = models.PositiveIntegerField(default=0)
-    completed_at = models.DateTimeField(auto_now_add=True)
-    def __str__(self):
-        return f'имя пользователя: {self.user.username}, название теста: {self.test.name}'
-
-class UserAnswer(models.Model):
-    attempt = models.ForeignKey(Attempt, on_delete=models.CASCADE)
-    option = models.ForeignKey(Option, on_delete=models.CASCADE)
+    def check(self):
+        # Проверяем, что вопрос привязывают именно к тестовому шагу
+        if self.step.step_type != Step.StepType.TEST:
+            raise ValidationError("Нельзя добавить вопрос к текстовому шагу курса.")
 
     def __str__(self):
-        return f'Попытка: {self.attempt.id}, Вопрос: {self.option.question.description[:30]}...'
+        return self.text[:50]
+
+class AnswerOption(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='options')
+    text = models.CharField(max_length=255)
+    is_correct = models.BooleanField(default=False, help_text="Является ли ответ правильным")
+
+    def __str__(self):
+        return self.text
 
 
+# --- БЛОК ПРОГРЕССА ---
 
-  
+class UserStepProgress(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='step_progress')
+    # Защищаем прогресс от случайного удаления курса/шага администратором
+    step = models.ForeignKey(Step, on_delete=models.PROTECT, related_name='user_progress')
+    is_completed = models.BooleanField(default=False)
+    # Храним процент правильных ответов, если это был тест
+    score = models.PositiveIntegerField(blank=True, null=True, help_text="Балл за тест (в %)")
+    completed_at = models.DateTimeField(auto_now=True)
 
-
-
-
-
-
+    class Meta:
+        unique_together = ('user', 'step')
