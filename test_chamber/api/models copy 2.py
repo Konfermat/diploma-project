@@ -9,6 +9,7 @@ class User(AbstractUser):
         return f'имя юзера: {self.username}'
 
 # --- БЛОК КУРСА ---
+
 class Course(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
@@ -19,8 +20,8 @@ class Course(models.Model):
 
 class Step(models.Model):
     class StepType(models.TextChoices):
-        TEXT = 'TEXT'
-        TEST = 'TEST'
+        TEXT = 'TEXT', 'Текст'
+        TEST = 'TEST', 'Тест'
 
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='steps')
     title = models.CharField(max_length=255)
@@ -42,57 +43,40 @@ class Step(models.Model):
     def __str__(self):
         return f"{self.course.title} - Шаг {self.order}: {self.title}"
 
+
 # --- БЛОК ТЕСТОВ ---
+
+class Question(models.Model):
+    step = models.ForeignKey(Step, on_delete=models.CASCADE, related_name='questions')
+    text = models.TextField(help_text="Текст вопроса")
+
+    def check(self):
+        # Проверяем, что вопрос привязывают именно к тестовому шагу
+        if self.step.step_type != Step.StepType.TEST:
+            raise ValidationError("Нельзя добавить вопрос к текстовому шагу курса.")
+
+    def __str__(self):
+        return self.text[:50]
+
+class AnswerOption(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='options')
+    text = models.CharField(max_length=255)
+    is_correct = models.BooleanField(default=False, help_text="Является ли ответ правильным")
+
+    def __str__(self):
+        return self.text
 
 
 # --- БЛОК ПРОГРЕССА ---
 
-class Repository {
-    void save(File file,
-              String text, String summary,
-              boolean overwrite) {
-        if (file.exists()
-                && !overwrite) {
-            throw new IllegalStateException(
-                    "file already exists");
-        }
-        update(file,
-               text,
-               summary);
-    }
-}
-This one is legal (and pretty, if you ask me):
+class UserStepProgress(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='step_progress')
+    # Защищаем прогресс от случайного удаления курса/шага администратором
+    step = models.ForeignKey(Step, on_delete=models.PROTECT, related_name='user_progress')
+    is_completed = models.BooleanField(default=False)
+    # Храним процент правильных ответов, если это был тест
+    score = models.PositiveIntegerField(blank=True, null=True, help_text="Балл за тест (в %)")
+    completed_at = models.DateTimeField(auto_now=True)
 
-class Repository {
-→→void save(File file,
-  →→String text, String summary,
-    boolean overwrite) {
-    if (file.exists()
-    →→&& !overwrite) {
-      throw new IllegalStateException(
-      →→"file already exists");
-    }
-    update(file,
-    →→text,
-      summary);
-  }
-}
-
-class Repository {
-  void save(
-    File file,
-    String text, 
-    String summary,
-    boolean overwrite
-    ) 
-    {
-    if (file.exists()
-      && !overwrite) {
-      throw new IllegalStateException(
-        "file already exists");
-    }
-    update(file,
-      text,
-      summary);
-  }
-}
+    class Meta:
+        unique_together = ('user', 'step')
