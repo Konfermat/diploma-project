@@ -4,6 +4,36 @@ from django.contrib.auth.models import AbstractUser
 
 '''
     Здесь я напишу какой основной логикой руководствуется моя БД.
+
+    Курс это список шагов. Шаги в свою очередь привязаны к курсу, содержат
+    списки текстов и список тестов.
+    Тесты привязаны к шагу
+
+
+    Основная структура такая:
+    # БЛОК КУРСОВ
+        Course
+            Курс "содержит": 
+                описание,
+                список шагов (Step)
+        Step
+            Каждый шаг может содержать:
+                список текстов или список контента (StepContent),
+                список тестов (Test)
+        StepContent
+            текстовый контент шага # сделан отдельный класс для правильногшо структурирования
+
+    # БЛОК ТЕСТОВ
+        Test
+            Тест содержит:
+                вопрос
+                список возможных ответов (TestOpiton)
+        TestOption
+            текст варианта ответа 
+
+    # БЛОК ПРОГРЕССА
+        User
+        UserStepProgress
 '''
 
 class User(AbstractUser):
@@ -34,39 +64,25 @@ class Step(models.Model):
     def __str__(self):
         return f'{self.course.title} - Шаг {self.order}: {self.title}'
 
-class StepElement(models.Model):
-    TYPES = (
-        ('TEXT', 'текст'),
-        ('TEST', 'тест'),
-    )
-
-    step = models.ForeignKey(Step, on_delete=models.CASCADE, related_name='elements')
+class StepContent(models.Model):
+    # название переменной будет step потому что так принято?
+    step = models.ForeignKey(Step, on_delete=models.CASCADE, related_name='contents')
+    material = models.TextField(blank=True, null=True)
     order = models.PositiveIntegerField(help_text='Порядковый номер контента в шаге.')
-    step_element_type = models.CharField(max_length=10, choices=TYPES)
 
     class Meta:
         ordering = ['order']
         unique_together = ('step', 'order') 
 
-    def __str__(self):
-        return f'{self.step.title} | Элемент {self.order} [{self.get_step_element_type_display()}]'        
-
-class TextContent(models.Model):
-    # Связь один-к-одному гарантирует: один элемент = один текст
-    element = models.OneToOneField(StepElement, on_delete=models.CASCADE, related_name='text_data')
-    material = models.TextField()
-
 # --- БЛОК ТЕСТОВ ---
 
 class Test(models.Model):
-    # Один элемент = один вопрос теста
-    element = models.OneToOneField(StepElement, on_delete=models.CASCADE, related_name='test_data')
+    step = models.ForeignKey(Step, on_delete=models.CASCADE, related_name='tests')
     question = models.CharField(max_length=255)
 
 class TestOption(models.Model):
-    # Теперь варианты ответов железно привязаны только к Тестам
     test = models.ForeignKey(Test, on_delete=models.CASCADE, related_name='options')
-    is_correct = models.BooleanField(default=False)
+    is_correct = models.BooleanField(default=False, help_text='Является ли ответ правильным')
     answer = models.CharField(max_length=500)
 
 # --- БЛОК ПРОГРЕССА ---
@@ -81,4 +97,3 @@ class UserStepProgress(models.Model):
     class Meta:
         unique_together = ('user', 'step')
 
-https://share.google/aimode/FABfML7N2rfOIyUUt
