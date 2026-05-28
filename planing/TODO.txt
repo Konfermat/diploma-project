@@ -63,6 +63,7 @@ OwO - тег
 -------------------------------------------------------
 !!! удалить admin 1234 admin@example.com
 
+    Попытка в АПИ
         def header(): # представление хедера
             button to "ip"/ image=static/logo.svg # на главную
             api/catalog
@@ -91,7 +92,7 @@ OwO - тег
                 кнопка ведет на "курс по теме 3"
                 ... все еше 3 максимум
 
-        Примерное представление:
+    Примерное представление чего то:
         
         Основа
             главная страница
@@ -126,14 +127,22 @@ OwO - тег
             админа
             модератора
         
-    Wireframe
-        diploma-project\planing\Wireframe\Wireframe.drawio
-    API
-        OwO
-        pass
-    UserStories
-        diploma-project\planing\user stories\user-stories.txt
+Wireframe
+    planing\Wireframe\Wireframe.drawio
+API
+    OwO
+    pass
+UserStories
+    planing\user stories\user-stories.txt
 
+Схема БД
+    planing\database\db_diagram.xml
+
+!!! ИСПРАВЬ БИЗНЕС ЛОГИКУ С 
+https://share.google/aimode/x6WJ2FsagrIEdjWu9
+planing\AI requests\Что ИИ думает о бизнес логике.pdf
+
+к пятнице сделать два ДЗ за 230426 и 280426  
 
 #######################################################
 Не актуально:
