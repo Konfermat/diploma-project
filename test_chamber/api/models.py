@@ -81,4 +81,4 @@ class UserStepProgress(models.Model):
     class Meta:
         unique_together = ('user', 'step')
 
-https://share.google/aimode/FABfML7N2rfOIyUUt
+# https://share.google/aimode/B2g3JVUP0B1MihcwR
