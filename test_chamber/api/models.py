@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.auth.models import AbstractUser
@@ -28,10 +29,6 @@ from django.contrib.auth.models import AbstractUser
             содержит флаг правильности ответа и ответ
         UserStepProgress(fk1=User, r_n=step_progress fk2=Step, r_n=user_progress)
             pass
-        
-        
-
-
 ''' 
 
 # --- БЛОК КУРСА ---
@@ -128,12 +125,10 @@ class UserStepProgress(models.Model):
 
     def save(self, *args, **kwargs):
         # Автоматически ставим дату, только если шаг пройден и дата еще не установлена
-        from django.utils import timezone
         if self.is_completed and not self.completed_at:
             self.completed_at = timezone.now()
         elif not self.is_completed:
             self.completed_at = None
         super().save(*args, **kwargs)
 
-# https://share.google/aimode/x6WJ2FsagrIEdjWu9
 
