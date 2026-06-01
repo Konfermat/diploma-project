@@ -3,19 +3,33 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-''' 
-    Рубрика "ИИ сказала..."
-        Архитектурное правило DRF 
-        Базовая валидация (БД): 
-        Уникальность, типы данных и связи 
-        (как ваши UniqueConstraint в Step и StepElement) 
-        должны оставаться в модели. 
-        DRF автоматически подхватит их и превратит в ошибки валидации.
-        Бизнес-логика: 
-        Сложные проверки (например, "нельзя добавить тест, 
-        если в шаге уже есть 5 элементов" или проверка дат) 
-        переносятся в Сериализатор.
 '''
+    Логика моей программы на данном этапе.
+        Есть Курс состоящий из Шагов. 
+        Каждый Шаг это этап изучения или определенный учебный материал. 
+        Каждый шаг имеет свойство.
+        Сейчас это или текст или тест по тексту.
+        Прогресс прохождения фиксируется посящением.
+
+
+    Здесь я напишу какой основной логикой руководствуется моя БД?
+        Course
+            инфо о курсе
+        Step(fk=Course='steps')
+            инфо о шаге курса
+        StepElement(fk=Step, rn_n='elements')
+            инфо о типе элемента шага
+        # создаешь строку в StepElement, определяешь её тип
+        # к одной строке (StepElement) один TextElement
+        TextElement(OneToOneField=StepElement, r_n='text_content')
+            содержит текст и проверку типа ввиде функции clean
+        TestElement(OneToOneField=StepElement, r_n='test_content')
+            Тоже что и TextElement но содержит вопрос по тексту
+        TestOption(fk=TestElement, r_n='options)
+            содержит флаг правильности ответа и ответ
+        UserStepProgress(fk1=User, r_n=step_progress fk2=Step, r_n=user_progress)
+            pass
+''' 
 
 # --- БЛОК КУРСА ---
 
@@ -40,8 +54,7 @@ class Step(models.Model):
         ]
 
     def __str__(self):
-        # https://share.google/aimode/3cFBeyaJEpEgvHiYy
-        return f'Заголовок шага: {self.title} Шаг: {self.order}'
+        return f'Заголовок: {self.course.title} - Шаг {self.order}: {self.title}'
 
 class StepElement(models.Model):
     TYPES = (
@@ -66,6 +79,12 @@ class StepElement(models.Model):
 class TextElement(models.Model):
     step_element = models.OneToOneField(StepElement, on_delete=models.CASCADE, related_name='text_content')
     body = models.TextField(help_text='Текст статьи')
+
+    def clean(self):
+        # Защита: контент TEXT не должен быть привязан к элементу типа TEST
+        if self.step_element.step_element_type != 'TEXT':
+            raise ValidationError("Родительский элемент должен иметь тип 'TEXT'.")    
+
 
 # --- БЛОК ТЕСТОВ ---
 

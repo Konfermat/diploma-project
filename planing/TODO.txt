@@ -155,8 +155,6 @@ UserStories
 !!! ИСПРАВЬ БИЗНЕС ЛОГИКУ С 
 planing\AI requests\Что ИИ думает о бизнес логике.pdf
 
-изучить способы заполнений БД
-
 # реф похожего проекта
 https://github.com/MeetDOD/EduLearning/tree/main
 
@@ -164,6 +162,9 @@ https://github.com/MeetDOD/EduLearning/tree/main
 
 frontend с tailwind?
 
+изучить способы заполнений БД
+    начнем с отображения
+    
 
 
 #######################################################
