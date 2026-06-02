@@ -1,5 +1,9 @@
-########################################################################
-########################################################################
+#######################################################
+Будет актуально:
+-------------------------------------------------------
+#######################################################
+актуально:
+-------------------------------------------------------
     # хз почему не работает через python -m venv .venv 
     # если полезешь копаться то опять отвлечешься 
     py -m venv .venv
@@ -9,10 +13,17 @@
     python manage.py startapp api
 
 
-    python manage.py makemigrations
+    python manage.py makemigrations 
     python manage.py migrate
 
-########################################################################
+    python manage.py makemigrations app_name # если миграция не проходит сделай так
+    python manage.py migrate app_name
+    python manage.py migrate # для миграции django моделей
+
+
+#######################################################
+не актуально:
+-------------------------------------------------------
     graph models command in django?
     https://www.youtube.com/watch?v=qzrE7cfc_3Q
     what is ER(entity relationship) diagram?
@@ -40,7 +51,7 @@
                 'django_extensions',
                 'core',  # ваше приложение
             ]
-        ah
+
         pip install pygraphviz django-extensions
         # Проверьте результат
         python -c "import pygraphviz; print(pygraphviz.__version__)"

@@ -40,7 +40,6 @@ class Step(models.Model):
         ]
 
     def __str__(self):
-        # https://share.google/aimode/3cFBeyaJEpEgvHiYy
         return f'Заголовок шага: {self.title} Шаг: {self.order}'
 
 class StepElement(models.Model):
