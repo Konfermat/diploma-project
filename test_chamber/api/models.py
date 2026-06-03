@@ -16,6 +16,11 @@ from django.contrib.auth.models import AbstractUser
         если в шаге уже есть 5 элементов" или проверка дат) 
         переносятся в Сериализатор.
 '''
+class User(AbstractUser):
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Имя юзера: {self.username}'
 
 # --- БЛОК КУРСА ---
 
@@ -23,6 +28,7 @@ class Course(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'Заголовок курса {self.title} Краткое описание: {self.description[:30]}'
@@ -85,11 +91,7 @@ class TestOption(models.Model):
 
 # --- БЛОК ПРОГРЕССА ---
 
-class User(AbstractUser):
-    created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return f'Имя юзера: {self.username}'
 
 # модель под вопросом
 class UserStepProgress(models.Model):
@@ -102,13 +104,18 @@ class UserStepProgress(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['user', 'step'], name='unique_user_step_progress')
         ]
-
-    def save(self, *args, **kwargs):
+        
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         # Автоматически ставим дату, только если шаг пройден и дата еще не установлена
         if self.is_completed and not self.completed_at:
             self.completed_at = timezone.now()
         elif not self.is_completed:
             self.completed_at = None
-        super().save(*args, **kwargs)
-
-
+            
+        # Передаем именованные аргументы явно
+        super().save(
+            force_insert=force_insert, 
+            force_update=force_update, 
+            using=using, 
+            update_fields=update_fields
+        )
