@@ -8,12 +8,16 @@
 from django.core.management.base import BaseCommand
 
 # how to lorem_ipsum
-    # common=True(defalt) means it starts with classic lorem ipsum paragraph all the time
+    # common=True(default) means it starts with classic lorem ipsum paragraph all the time
     # lorem_ipsum.paragraphs(count, common=True)
     # lorem_ipsum.sentence()
     # lorem_ipsum.words(count, common=False) # сгенерирует 5 рандомных латинских слов 
 from django.utils import lorem_ipsum 
 from api.models import User, Course, Step, StepElement, TextElement, TestElement, TestOption, UserStepProgress
+# полезные команды:
+    # pass  
+import random
+
 
 
 class Command(BaseCommand):
@@ -24,7 +28,8 @@ class Command(BaseCommand):
         # если нету то создаем нового
         if not user:
             user = User.objects.create_superuser(username='admin', password='1234')
-            
+
+        # список на создание     
         courses = [
             Course(title='Поколение Python', 
             description='​В курсе рассказывается об основных типах данных, конструкциях и принципах структурного программирования языка Python. Курс содержит теорию в формате текстовых конспектов и более 500 задач с автоматизированной проверкой. Этот курс является первой частью линейки курсов "Поколение Python".',
@@ -33,10 +38,10 @@ class Command(BaseCommand):
             Course(title='Поколение Lorem', description=lorem_ipsum.words(100, common=False), user=user),
             Course(title='Поколение Ipsum', description=lorem_ipsum.words(100, common=False), user=user),
             ]
-        # Создание нескольких
+        # Создание по списку
         Course.objects.bulk_create(courses)
         courses = Course.objects.all()
-        
+            
 
 
 
