@@ -1,0 +1,22 @@
+для команды python manage.py populate_db
+
+чтобы это работало нужно:
+    создать management/commands/__init__.py
+    создать management/commands/your_custom_command_name.py
+
+Course.objects.all().delete()  Удалит все старые курсы перед созданием новых
+
+Находим курс по названию и обновляем его описание
+Course.objects.filter(title='Поколение Python').update(
+    description='Ваш новый правильный текст описания курса.'
+)
+
+how to lorem_ipsum
+    common=True(default) means it starts with classic lorem ipsum paragraph all the time
+    lorem_ipsum.paragraphs(count, common=True)
+    lorem_ipsum.sentence()
+    lorem_ipsum.words(count, common=False) сгенерирует 5 рандомных латинских слов 
+
+print(Course.objects.all()[0].title)
+    Course.objects.all() # вызов списка классов
+    [0].title # вызов поля объекта класса что стоит в начале

@@ -1,11 +1,7 @@
-# TODO удали неправильный lorem 
-# python manage.py shell
-
-Course.objects.all().delete()  # Удалит все старые курсы перед созданием новых
-
+from django.core.management.base import BaseCommand
 from api.models import Course
 
-# Находим курс по названию и обновляем его описание
-Course.objects.filter(title='Поколение Python').update(
-    description='Ваш новый правильный текст описания курса.'
-)
+
+class Command(BaseCommand):
+    def handle(self, *args, **kwargs):
+        print(Course.objects)

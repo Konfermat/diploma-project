@@ -1,23 +1,11 @@
 # сделать через Factory Boy но сначала сделать вручную по образу и подобию BugBytes
 
-
-# для команды python manage.py populate_db
-# чтобы это работало нужно:
-    # создать management/commands/__init__.py
-    # создать management/commands/your_custom_command_name.py
 from django.core.management.base import BaseCommand
-
-# how to lorem_ipsum
-    # common=True(default) means it starts with classic lorem ipsum paragraph all the time
-    # lorem_ipsum.paragraphs(count, common=True)
-    # lorem_ipsum.sentence()
-    # lorem_ipsum.words(count, common=False) # сгенерирует 5 рандомных латинских слов 
 from django.utils import lorem_ipsum 
 from api.models import User, Course, Step, StepElement, TextElement, TestElement, TestOption, UserStepProgress
-# полезные команды:
-    # pass  
-import random
 
+import random
+# random(randint(15))
 
 
 class Command(BaseCommand):
@@ -38,17 +26,23 @@ class Command(BaseCommand):
             Course(title='Поколение Lorem', description=lorem_ipsum.words(100, common=False), user=user),
             Course(title='Поколение Ipsum', description=lorem_ipsum.words(100, common=False), user=user),
             ]
-        # Создание по списку
+        # Создание по списку выше
         Course.objects.bulk_create(courses)
         courses = Course.objects.all()
+
+        for course in courses:
+            cnt = 1
+            for i in range(random.randint(10, 15)):
+                Step.objects.create(course=course, title=lorem_ipsum.words(2, common=False), order=cnt)
+                cnt += 1
+
+
+        
+
+
             
-
-
-
 # Создает один
 # Order.objects.create(user=user)
 
 # создает несколько по списку
 # Course.objects.bulk_create(courses)
-# courses = 
-#
