@@ -12,9 +12,14 @@ def course_list(request):
     return Response(serializer.data)
 
 @api_view(['GET'])
+def course_detail(request, pk):
+    course = get_object_or_404(Course, pk=pk)
+    serializer = CourseSerializer(course)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
 def step_list(request):
     steps = Step.objects.all()
     serializer = StepSerializer(steps, many=True)
     return Response(serializer.data)
-
-
