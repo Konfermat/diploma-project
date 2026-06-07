@@ -31,7 +31,7 @@ class Command(BaseCommand):
                 return user
             return user
 
-        def first_start():
+        def populate_courses_steps():
             user = get_superuser()
             # список на создание     
             courses = [
@@ -52,8 +52,42 @@ class Command(BaseCommand):
                 for i in range(random.randint(10, 15)):
                     Step.objects.create(course=course, title=lorem_ipsum.words(2, common=False), order=cnt)
                     cnt += 1
+        # populate_courses_steps()
+        
+        def populate_step_elements():
+            steps = Step.objects.all()
+                # создаем тип
+            StepElement.objects.create(step=steps[0], step_element_type='text')
+        # populate_step_elements()
+        def populate_wrong_type():
+            steps = Step.objects.all()
+            StepElement.objects.create(step=steps[0], step_element_type='teext')
+        # populate_wrong_type()
 
-        first_start()
+        def del_wrong_type():
+            temp = StepElement.objects.filter(step_element_type='teext').first()
+            temp.delete()
+        # del_wrong_type()
+        def populate_text_element():
+            # нужно класть объект а не QuerySet
+            step_element = StepElement.objects.filter(step=1).first()
+            TextElement.objects.create(step_element=step_element, body=lorem_ipsum.words(15, common=False))
+        # populate_text_element()
+        def populate_step_with_text_element():
+            step = Step.objects.filter(title='quae beatae').first()
+            StepElement.objects.create(step=step, step_element_type='test')
+        # populate_step_with_text_element()
+        def populate_test_element():
+            step_element = StepElement.objects.filter(step_element_type='test').first()
+            TestElement.objects.create(step_element=step_element, question=lorem_ipsum.words(5))
+        # populate_test_element()
+
+
+            
+            
+            
+        
+
 
             
 # Создает один
@@ -61,3 +95,8 @@ class Command(BaseCommand):
 
 # создает несколько по списку
 # Course.objects.bulk_create(courses)
+
+# вернет объект поля которых можно вызвать
+# StepElement.objects.filter(step_element_type='teext').first()
+# Вернет QuerySet нужен хз зачем. Забыл
+# StepElement.objects.filter(step_element_type='teext')
