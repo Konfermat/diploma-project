@@ -142,9 +142,9 @@ OwO - тег
 Wireframe
     planing\Wireframe\Wireframe.drawio
 API
-    OwO
     pass
 UserStories
+    OwO
     planing\user stories\user-stories.txt
 Схема БД
     planing\database\db_diagram.xml

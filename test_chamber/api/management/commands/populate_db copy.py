@@ -11,42 +11,30 @@ import random
 class Command(BaseCommand):
     help = 'базовое заполнение таблиц'
     def handle(self, *args, **kwargs):
+        # получаем пользователя
+        user = User.objects.filter(username='admin').first()
+        # если нету то создаем нового
+        if not user:
+            user = User.objects.create_superuser(username='admin', password='1234')
 
-        def get_superuser():
-            # получаем пользователя
-            user = User.objects.filter(username='admin').first()
-            # если нету то создаем нового
-            if not user:
-                user = User.objects.create_superuser(username='admin', password='1234')
-                return user
-            return user
+        # список на создание     
+        courses = [
+            Course(title='Поколение Python', 
+            description='​В курсе рассказывается об основных типах данных, конструкциях и принципах структурного программирования языка Python. Курс содержит теорию в формате текстовых конспектов и более 500 задач с автоматизированной проверкой. Этот курс является первой частью линейки курсов "Поколение Python".',
+            user=user,
+            ),
+            Course(title='Поколение Lorem', description=lorem_ipsum.words(100, common=False), user=user),
+            Course(title='Поколение Ipsum', description=lorem_ipsum.words(100, common=False), user=user),
+            ]
+        # Создание по списку выше
+        Course.objects.bulk_create(courses)
+        courses = Course.objects.all()
 
-        def first_start():
-            user = get_superuser()
-            # список на создание     
-            courses = [
-                Course(title='Поколение Python', 
-                description='​В курсе рассказывается об основных типах данных, конструкциях и принципах структурного программирования языка Python. Курс содержит теорию в формате текстовых конспектов и более 500 задач с автоматизированной проверкой. Этот курс является первой частью линейки курсов "Поколение Python".',
-                user=user,
-                ),
-                Course(title='Поколение Lorem', description=lorem_ipsum.words(100, common=False), user=user),
-                Course(title='Поколение Ipsum', description=lorem_ipsum.words(100, common=False), user=user),
-                ]
-            # Создание по списку выше
-            Course.objects.bulk_create(courses)
-            courses = Course.objects.all()
+        for course in courses:
+            cnt = 1
+            for i in range(random.randint(10, 15)):
+                Step.objects.create(course=course, title=lorem_ipsum.words(2, common=False), order=cnt)
+                cnt += 1
 
-            for course in courses:
-                cnt = 1
-                for i in range(random.randint(10, 15)):
-                    Step.objects.create(course=course, title=lorem_ipsum.words(2, common=False), order=cnt)
-                    cnt += 1
 
-        first_start()
-
-            
-# Создает один
-# Order.objects.create(user=user)
-
-# создает несколько по списку
-# Course.objects.bulk_create(courses)
+        
