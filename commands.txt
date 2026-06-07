@@ -6,4 +6,5 @@ py manage.py migrate
 py manage.py runserver
 # python manage.py runserver # стал работать нормально
 
-python manage.py check # проверка на наличие ошибок
+python manage.py check # проверка на наличие ошибок?
+
