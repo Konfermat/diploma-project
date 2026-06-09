@@ -5,10 +5,9 @@ from api.models import Course
 
 class Command(BaseCommand):
     def handle(self, *args, **kwargs):
-        print(Course.objects)
 
-        # asdf
-        courses = Course.objects.all()
+        print(Course)
+        def fixing(*args):
+            seq = [obj.objects.all() for obj in args]
 
-
-    
+        fixing()

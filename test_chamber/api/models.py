@@ -50,13 +50,23 @@ class Step(models.Model):
 
 class StepElement(models.Model):
     TYPES = (
-        ('TEXT', 'text'),
-        ('TEST', 'test'),
+        ('TEXT', 'текст'),
+        ('TEST', 'тест'),
     )
 
     step = models.ForeignKey(Step, on_delete=models.CASCADE, related_name='elements')
+    order = models.PositiveIntegerField(help_text='Порядковый номер контента в шаге.', null=True, blank=True)
     step_element_type = models.CharField(max_length=10, choices=TYPES)
-   
+
+    class Meta:
+        ordering = ['order']
+
+        constraints = [
+            models.UniqueConstraint(fields=['step', 'order'], name='unique_step_element_order')
+        ]        
+
+    def __str__(self):
+        return f'Заголовок: {self.step.title} Номер: {self.order} Тип: [{self.get_step_element_type_display()}]' 
 
 class TextElement(models.Model):
     step_element = models.OneToOneField(StepElement, on_delete=models.CASCADE, related_name='text_content')
