@@ -3,19 +3,6 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-''' 
-    Рубрика "ИИ сказала..."
-        Архитектурное правило DRF 
-        Базовая валидация (БД): 
-        Уникальность, типы данных и связи 
-        (как ваши UniqueConstraint в Step и StepElement) 
-        должны оставаться в модели. 
-        DRF автоматически подхватит их и превратит в ошибки валидации.
-        Бизнес-логика: 
-        Сложные проверки (например, "нельзя добавить тест, 
-        если в шаге уже есть 5 элементов" или проверка дат) 
-        переносятся в Сериализатор.
-'''
 class User(AbstractUser):
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -33,44 +20,66 @@ class Course(models.Model):
     def __str__(self):
         return f'Заголовок курса {self.title} Краткое описание: {self.description[:30]}'
 
+
 class Step(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='steps')
     title = models.CharField(max_length=255)
-    order = models.PositiveIntegerField(help_text='Порядковый номер шага в курсе.')
+    order = models.PositiveIntegerField(default=0, help_text='Порядковый номер шага в курсе.', blank=True)
 
     class Meta:
-        ordering = ['order']
+        ordering = ['order', 'id']
 
-        constraints = [
-            models.UniqueConstraint(fields=['course', 'order'], name='unique_course_step_order')
-        ]
+    def save(self, *args, **kwargs):
+        if not self.order:
+            last_step = Step.objects.filter(course=self.course).order_by('-order').first()
+            if last_step:
+                self.order = last_step.order + 1
+            else:
+                self.order = 1
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f'Заголовок шага: {self.title} Шаг: {self.order}'
+
 
 class StepElement(models.Model):
     TYPES = (
         ('TEXT', 'текст'),
         ('TEST', 'тест'),
     )
-
     step = models.ForeignKey(Step, on_delete=models.CASCADE, related_name='elements')
-    order = models.PositiveIntegerField(help_text='Порядковый номер контента в шаге.', null=True, blank=True)
+    order = models.PositiveIntegerField(default=0, help_text='Порядковый номер контента в шаге.', blank=True)
     step_element_type = models.CharField(max_length=10, choices=TYPES)
 
     class Meta:
-        ordering = ['order']
+        ordering = ['order', 'id']
 
-        constraints = [
-            models.UniqueConstraint(fields=['step', 'order'], name='unique_step_element_order')
-        ]        
+    def save(self, *args, **kwargs):
+        if not self.order:
+            last_element = StepElement.objects.filter(step=self.step).order_by('-order').first()
+            if last_element:
+                self.order = last_element.order + 1
+            else:
+                self.order = 1
+        super().save(*args, **kwargs)
 
     def __str__(self):
-        return f'Заголовок: {self.step.title} Номер: {self.order} Тип: [{self.get_step_element_type_display()}]' 
+        return f'Заголовок: {self.step.title} Номер: {self.order} Тип: [{self.get_step_element_type_display()}]'
+
 
 class TextElement(models.Model):
     step_element = models.OneToOneField(StepElement, on_delete=models.CASCADE, related_name='text_content')
     body = models.TextField(help_text='Текст статьи')
+
+    def clean(self):
+        # Защита: контент TEXT не должен быть привязан к элементу типа TEST
+        if self.step_element.step_element_type != 'TEXT':
+            raise ValidationError("Родительский элемент должен иметь тип 'TEXT'.")
+
+    def save(self, *args, **kwargs):
+        self.full_clean()  # Принудительно запускаем clean() перед сохранением
+        super().save(*args, **kwargs)
+
 
 # --- БЛОК ТЕСТОВ ---
 
@@ -79,9 +88,13 @@ class TestElement(models.Model):
     question = models.CharField(max_length=255)
 
     def clean(self):
-        # Защита: контент TEST не должен быть привязан к элементу типа TEXT
         if self.step_element.step_element_type != 'TEST':
             raise ValidationError("Родительский элемент должен иметь тип 'TEST'.")
+
+    def save(self, *args, **kwargs):
+        self.full_clean()  # Теперь валидация точно сработает
+        super().save(*args, **kwargs)
+
 
 class TestOption(models.Model):
     test_element = models.ForeignKey(TestElement, on_delete=models.CASCADE, related_name='options')
@@ -91,9 +104,6 @@ class TestOption(models.Model):
 
 # --- БЛОК ПРОГРЕССА ---
 
-
-
-# модель под вопросом
 class UserStepProgress(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='step_progress')
     step = models.ForeignKey(Step, on_delete=models.CASCADE, related_name='user_progress')
@@ -105,17 +115,10 @@ class UserStepProgress(models.Model):
             models.UniqueConstraint(fields=['user', 'step'], name='unique_user_step_progress')
         ]
         
-    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
-        # Автоматически ставим дату, только если шаг пройден и дата еще не установлена
+    def save(self, *args, **kwargs):
         if self.is_completed and not self.completed_at:
             self.completed_at = timezone.now()
         elif not self.is_completed:
             self.completed_at = None
             
-        # Передаем именованные аргументы явно
-        super().save(
-            force_insert=force_insert, 
-            force_update=force_update, 
-            using=using, 
-            update_fields=update_fields
-        )
+        super().save(*args, **kwargs)

@@ -167,7 +167,12 @@ https://github.com/MeetDOD/EduLearning/tree/main
 
 frontend с tailwind?
 
-найти решения по order
+# найти решения по order
+
+# в процессе
+https://share.google/aimode/m1lvrRgnrTkYmL30B
+
+
 изучить способы заполнений БД
     начнем с отображения
     
