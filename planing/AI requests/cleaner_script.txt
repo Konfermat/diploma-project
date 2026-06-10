@@ -1,0 +1,61 @@
+
+####################################################
+# ссылка которая будет неработать через какое то время поетому я сохраняяю все в pdf предварительно подготовив к страницу к экспорту
+https://share.google/aimode/N3aTYJ4wlrLChV77D
+
+### готовый скрипт
+### класс видать у них один класс 'div.y4VEUd.vve6Ce'
+const s = document.querySelectorAll('section'); document.body.innerHTML = ''; s.forEach(el => document.body.appendChild(el));
+document.querySelectorAll('div.y4VEUd.vve6Ce').forEach(el => el.remove());
+document.querySelectorAll('pre, code').forEach(el => el.style.whiteSpace = 'pre-wrap');
+document.querySelectorAll('div[data-xid="m3fCN"]').forEach(el => el.remove());
+
+###
+javascript:(function(){document.querySelectorAll('div.y4VEUd.vve6Ce, div[data-xid="t4TM"]').forEach(el=>el.remove());})();
+
+javascript:(function(){const s = document.querySelectorAll('section'); document.body.innerHTML = ''; s.forEach(el => document.body.appendChild(el));
+document.querySelectorAll('div.y4VEUd.vve6Ce').forEach(el => el.remove());
+document.querySelectorAll('pre, code').forEach(el => el.style.whiteSpace = 'pre-wrap');
+document.querySelectorAll('div[data-xid="m3fCN"]').forEach(el => el.remove());})();
+
+
+####################################################
+Мыслительный процесс
+    <!-- добавляет атрибут к тегу -->
+    document.querySelectorAll('code').forEach(el => el.style.whiteSpace = 'pre-wrap');
+
+    <!-- К обоим тегам -->
+    document.querySelectorAll('pre, code').forEach(el => el.style.whiteSpace = 'pre-wrap');
+
+
+    // 1. Находим все теги <section> на странице
+    const sections = document.querySelectorAll('section');
+
+    // 2. Полностью очищаем видимое содержимое страницы (тег body)
+    document.body.innerHTML = '';
+
+    // 3. Возвращаем обратно только найденные секции
+    sections.forEach(sec => document.body.appendChild(sec));
+
+    В одну строку
+    const s = document.querySelectorAll('section'); document.body.innerHTML = ''; s.forEach(el => document.body.appendChild(el));
+
+
+    Удаляет элемент по имени класса
+    Пример <div class="y4VEUd vve6Ce"></div>
+    document.querySelector('div.y4VEUd.vve6Ce')?.remove();
+
+    Удаляет все элементы по имени класса
+    document.querySelectorAll('div.y4VEUd.vve6Ce').forEach(el => el.remove());
+
+
+    Удаляет элемент по имени класса Для data-xid="m3fCN"
+    document.querySelector('div[data-xid="m3fCN"]')?.remove();
+
+    Удаляет все элементы по имени класса Для data-xid="m3fCN"
+    document.querySelectorAll('div[data-xid="m3fCN"]').forEach(el => el.remove());
+
+
+
+
+

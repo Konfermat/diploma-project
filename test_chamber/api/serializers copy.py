@@ -1,6 +1,22 @@
 from rest_framework import serializers
-from .models import Course, User, Step, StepElement, TextElement, TestElement, TestOption
+from .models import Course, User, Step, StepElement, TextElement, TestElement
 
+'''щитпост:
+    hyperlink related field для указывания списках в таблицах для перехода по ним
+    что твоя api должна вернуть? Ссылку или данные?
+    Подумай какая логика должна быть именно у тебя
+    для того чтобы переслать всю данные одним запросом передай данные
+    если данные тяжелые то нужно сообразить с ссылками 
+
+    сериализаторы их методы их вложенность а также есть еще generic сериализаторы которые не привязаны к таблицам
+
+    serializers method нужен для вычислений данных полей
+    serializers method можно переименовать через method_name
+
+    если скрыть steps то будут показываться fk
+    сделать вокруг этого логику?
+    many=True проверь еще эту логику
+'''
 
 class TestOptionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -10,10 +26,8 @@ class TestOptionSerializer(serializers.ModelSerializer):
             'is_correct'
         ]
 
-
 class TestElementSerializer(serializers.ModelSerializer):
     options = TestOptionSerializer(many=True)
-
     class Meta:
         model = TestElement
         fields = [
@@ -21,34 +35,32 @@ class TestElementSerializer(serializers.ModelSerializer):
             'options'
         ]
 
-
 class TextElementSerializer(serializers.ModelSerializer):
     class Meta:
         model = TextElement
         fields = (
+            'step_element',
             'body',
         )
-
 
 class StepElementSerializer(serializers.ModelSerializer):
     text_content = TextElementSerializer(read_only=True)
     test_content = TestElementSerializer(read_only=True)
-
     class Meta:
         model = StepElement
         fields = (
-            'id',
+            'id'
             'step',
             'order',
             'step_element_type',
             'text_content',
             'test_content',
         )
-
+    
+    # TODO сделать валидацию типов
 
 class StepSerializer(serializers.ModelSerializer):
     elements = StepElementSerializer(many=True, read_only=True)
-
     class Meta:
         model = Step
         fields = (
@@ -59,18 +71,24 @@ class StepSerializer(serializers.ModelSerializer):
             'elements',
         )
 
-
 # Фабричный сериализатор создания
-# Изменено: наследуемся от serializers.Serializer, так как мы не сохраняем эту модель напрямую
-class StepElementCreateSerializer(serializers.Serializer):
+class StepElementCreateSerializer(serializers.ModelSerializer):
+    # Используем ваши типы: TEXT и TEST
     type = serializers.ChoiceField(choices=['TEXT', 'TEST'], write_only=True)
     content_data = serializers.JSONField(write_only=True)
+
+    class Meta:
+        model = StepElement
+        fields = ['id', 'step', 'type', 'content_data', 'order']
+        extra_kwargs = {
+            'step': {'required': False},
+            'order': {'required': False}
+        }
 
     def validate(self, attrs):
         element_type = attrs.get('type')
         content_data = attrs.get('content_data')
 
-        # 4. Исправлено: валидируем входящий JSON под конкретный тип контента
         if element_type == 'TEXT':
             serializer = TextElementSerializer(data=content_data)
         elif element_type == 'TEST':
@@ -82,10 +100,8 @@ class StepElementCreateSerializer(serializers.Serializer):
         attrs['validated_content_data'] = serializer.validated_data
         return attrs
 
-
 class CourseDetailSerializer(serializers.ModelSerializer):
     steps = StepSerializer(many=True, read_only=True)
-
     class Meta:
         model = Course
         fields = (
@@ -94,6 +110,20 @@ class CourseDetailSerializer(serializers.ModelSerializer):
             'description',
             'steps',
         )
+
+class RecorderIdsSerializer(serializers.ModelSerializer):
+    # Принимает массив id: {"ordered_ids": [1, 2, 3]}
+    # Спросить как это работает?
+    ordered_ids = serializers.ListField(
+        child=serializers.IntegerField(),
+        allow_empty=False,
+        help_text='Список ID в новом порядке отображения.'
+    )
+    def validate_ordered_ids(self, value):
+        if len(value) != len(set(value)):
+            raise serializers.ValidationError('Список ID содержит дубликаты.')
+        return value
+
 
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -109,16 +139,9 @@ class CourseSerializer(serializers.ModelSerializer):
             'steps',
         )
 
-
-# Наследуемся от обычного Serializer, так как валидируем просто абстрактный JSON с фронтенда
-class ReorderIdsSerializer(serializers.Serializer):
-    ordered_ids = serializers.ListField(
-        child=serializers.IntegerField(),
-        allow_empty=False,
-        help_text='Список ID в новом порядке отображения.'
-    )
-
-    def validate_ordered_ids(self, value):
-        if len(value) != len(set(value)):
-            raise serializers.ValidationError('Список ID содержит дубликаты.')
+    def validate_order(self, value):
+        if value < 0:
+            raise serializers.ValidationError(
+                'Порядковый номер не может быть ниже нуля.'
+            )
         return value

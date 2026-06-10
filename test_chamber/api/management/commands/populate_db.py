@@ -1,102 +1,91 @@
-
-
-            
-# Создает один
-# Order.objects.create(user=user)
-
-# создает несколько по списку
-# Course.objects.bulk_create(courses)
-
-
-# сделать через Factory Boy но сначала сделать вручную по образу и подобию BugBytes
-
-from django.core.management.base import BaseCommand
-from django.utils import lorem_ipsum 
-from api.models import User, Course, Step, StepElement, TextElement, TestElement, TestOption, UserStepProgress
-
 import random
-# random(randint(15))
+from django.core.management.base import BaseCommand
+from django.utils.lorem_ipsum  import words, paragraphs 
+
+from django.db import transaction
+
+from api.models import User, Course, Step, StepElement, TextElement, TestElement, TestOption
 
 
 class Command(BaseCommand):
-    help = 'базовое заполнение таблиц'
+    help = 'Команда для автоматического заполнения БД тестовыми курсами, шагами и полиморфным контентом'
+
     def handle(self, *args, **kwargs):
+        self.stdout.write("Начало заполнения базы данных...")
 
-        def get_superuser():
-            # получаем пользователя
-            user = User.objects.filter(username='admin').first()
-            # если нету то создаем нового
-            if not user:
-                user = User.objects.create_superuser(username='admin', password='1234')
-                return user
-            return user
+        # 1. Получаем или создаем суперпользователя
+        user, created = User.objects.get_or_create(username='admin')
+        if created:
+            user.set_password('1234')
+            user.is_superuser = True
+            user.is_staff = True
+            user.save()
+            # Обрати внимание
+            self.stdout.write("Создан новый суперпользователь 'admin' с паролем '1234'")
 
-        def populate_courses_steps():
-            user = get_superuser()
-            # список на создание     
-            courses = [
-                Course(title='Поколение Python', 
-                description='​В курсе рассказывается об основных типах данных, конструкциях и принципах структурного программирования языка Python. Курс содержит теорию в формате текстовых конспектов и более 500 задач с автоматизированной проверкой. Этот курс является первой частью линейки курсов "Поколение Python".',
-                user=user,
+        # Оборачиваем генерацию в одну транзакцию, чтобы всё создавалось быстро и безопасно
+        # Обрати внимание 
+        with transaction.atomic():
+            
+            # Очищаем старые данные (опционально, если хотите обновлять БД с нуля)
+            Course.objects.all().delete()
+
+            # 2. Создаем курсы
+            courses_to_create = [
+                Course(
+                    title='Поколение Python', 
+                    description='В курсе рассказывается об основных типах данных, конструкциях и принципах структурного программирования языка Python. Курс содержит теорию в формате текстовых конспектов и более 500 задач с автоматизированной проверкой.',
+                    user=user
                 ),
-                Course(title='Поколение Lorem', description=lorem_ipsum.words(100, common=False), user=user),
-                Course(title='Поколение Ipsum', description=lorem_ipsum.words(100, common=False), user=user),
-                ]
-            # Создание по списку выше
-            Course.objects.bulk_create(courses)
-            # сбор курсов
+                Course(
+                    title='Продвинутый Django', 
+                    description='Изучаем глубокие архитектурные концепции: полиморфные связи, кастомные менеджеры, оптимизацию ORM-запросов и работу с транзакциями.',
+                    user=user
+                )
+            ]
+            Course.objects.bulk_create(courses_to_create)
+            
+            # Получаем созданные курсы из базы
             courses = Course.objects.all()
 
+            # 3. Наполняем каждый курс шагами и элементами
             for course in courses:
-                cnt = 1
-                for i in range(random.randint(10, 15)):
-                    Step.objects.create(course=course, title=lorem_ipsum.words(2, common=False), order=cnt)
-                    cnt += 1
-        # populate_courses_steps()
-        
-        def populate_step_elements():
-            steps = Step.objects.all()
-                # создаем тип
-            StepElement.objects.create(step=steps[0], step_element_type='text')
-        # populate_step_elements()
-        def populate_wrong_type():
-            steps = Step.objects.all()
-            StepElement.objects.create(step=steps[0], step_element_type='teext')
-        # populate_wrong_type()
+                # Генерируем от 3 до 5 шагов для каждого курса
+                for step_num in range(1, random.randint(4, 6)):
+                    step = Step.objects.create(
+                        course=course,
+                        title=f"Урок {step_num}: " + words(2, common=False).capitalize(),
+                        order=step_num
+                    )
 
-        def del_wrong_type():
-            temp = StepElement.objects.filter(step_element_type='teext').first()
-            temp.delete()
-        # del_wrong_type()
-        def populate_text_element():
-            # нужно класть объект а не QuerySet
-            step_element = StepElement.objects.filter(step=1).first()
-            TextElement.objects.create(step_element=step_element, body=lorem_ipsum.words(15, common=False))
-        # populate_text_element()
-        def populate_step_with_text_element():
-            step = Step.objects.filter(title='quae beatae').first()
-            StepElement.objects.create(step=step, step_element_type='test')
-        # populate_step_with_text_element()
-        def populate_test_element():
-            step_element = StepElement.objects.filter(step_element_type='test').first()
-            TestElement.objects.create(step_element=step_element, question=lorem_ipsum.words(5))
-        # populate_test_element()
+                    # 4. Внутри каждого шага создаем контент (текст и тесты попеременно)
+                    for el_num in range(1, 4):
+                        # Чередуем тип элемента
+                        el_type = 'TEXT' if el_num % 2 != 0 else 'TEST'
+                        
+                        step_element = StepElement.objects.create(
+                            step=step,
+                            step_element_type=el_type,
+                            order=el_num
+                        )
 
+                        if el_type == 'TEXT':
+                            # Создаем текстовый блок
+                            TextElement.objects.create(
+                                step_element=step_element,
+                                body=f"### Теория к уроку\n\n" + "\n\n".join(paragraphs(2, common=False))
+                            )
+                        
+                        elif el_type == 'TEST':
+                            # Создаем вопрос
+                            test_element = TestElement.objects.create(
+                                step_element=step_element,
+                                question=f"Вопрос по теме урока: Сколько будет {random.randint(2, 5)} + {random.randint(2, 5)}?"
+                            )
+                            
+                            # Создаем варианты ответов
+                            TestOption.objects.create(test_element=test_element, answer="Правильный ответ", is_correct=True)
+                            TestOption.objects.create(test_element=test_element, answer="Неправильный вариант А", is_correct=False)
+                            TestOption.objects.create(test_element=test_element, answer="Неправильный вариант Б", is_correct=False)
 
-            
-            
-            
-        
-
-
-            
-# Создает один
-# Order.objects.create(user=user)
-
-# создает несколько по списку
-# Course.objects.bulk_create(courses)
-
-# вернет объект поля которых можно вызвать
-# StepElement.objects.filter(step_element_type='teext').first()
-# Вернет QuerySet нужен хз зачем. Забыл
-# StepElement.objects.filter(step_element_type='teext')
+        self.stdout.write(self.style.SUCCESS("База данных успешно наполнена тестовыми данными!"))

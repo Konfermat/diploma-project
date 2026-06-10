@@ -9,7 +9,6 @@ class User(AbstractUser):
     def __str__(self):
         return f'Имя юзера: {self.username}'
 
-
 # --- БЛОК КУРСА ---
 
 class Course(models.Model):
@@ -65,19 +64,20 @@ class StepElement(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        # Безопасное отображение, если шаг уже удален каскадно
-        step_title = self.step.title if self.step else "Удаленный шаг"
-        return f'Заголовок: {step_title} Номер: {self.order} Тип: [{self.get_step_element_type_display()}]'
+        return f'Заголовок: {self.step.title} Номер: {self.order} Тип: [{self.get_step_element_type_display()}]'
 
 
 class TextElement(models.Model):
     step_element = models.OneToOneField(StepElement, on_delete=models.CASCADE, related_name='text_content')
     body = models.TextField(help_text='Текст статьи')
 
-    def save(self, *args, **kwargs):
-        # Валидация перенесена напрямую в save() без вызова full_clean()
-        if self.step_element and self.step_element.step_element_type != 'TEXT':
+    def clean(self):
+        # Защита: контент TEXT не должен быть привязан к элементу типа TEST
+        if self.step_element.step_element_type != 'TEXT':
             raise ValidationError("Родительский элемент должен иметь тип 'TEXT'.")
+
+    def save(self, *args, **kwargs):
+        self.full_clean()  # Принудительно запускаем clean() перед сохранением
         super().save(*args, **kwargs)
 
 
@@ -87,10 +87,12 @@ class TestElement(models.Model):
     step_element = models.OneToOneField(StepElement, on_delete=models.CASCADE, related_name='test_content')
     question = models.CharField(max_length=255)
 
-    def save(self, *args, **kwargs):
-        # Валидация перенесена напрямую в save() без вызова full_clean()
-        if self.step_element and self.step_element.step_element_type != 'TEST':
+    def clean(self):
+        if self.step_element.step_element_type != 'TEST':
             raise ValidationError("Родительский элемент должен иметь тип 'TEST'.")
+
+    def save(self, *args, **kwargs):
+        self.full_clean()  # Теперь валидация точно сработает
         super().save(*args, **kwargs)
 
 
@@ -109,6 +111,7 @@ class UserStepProgress(models.Model):
     completed_at = models.DateTimeField(blank=True, null=True)
 
     class Meta:
+        # мне это нужно?
         constraints = [
             models.UniqueConstraint(fields=['user', 'step'], name='unique_user_step_progress')
         ]

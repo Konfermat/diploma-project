@@ -170,7 +170,10 @@ frontend с tailwind?
 # найти решения по order
 
 # в процессе
-https://share.google/aimode/m1lvrRgnrTkYmL30B
+https://share.google/aimode/8DAy00vaMES72akqx
+
+TODO 
+Развернуть у себя портативный react 
 
 
 изучить способы заполнений БД
