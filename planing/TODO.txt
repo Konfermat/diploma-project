@@ -59,6 +59,31 @@ OwO - тег
         форматы
             json и xls
 
+    Скрипты в cmd:
+        @echo off
+        setlocal enabledelayedexpansion
+
+        :: 1. Получаем ширину экрана из команды "mode con"
+        for /f "tokens=2 delims=:" %%A in ('mode con ^| findstr Columns') do (
+            set /a width=%%A
+        )
+
+        :: Убираем возможные лишние пробелы из переменной
+        set /a width=%width%
+
+        :: 2. Генерируем строку из символов # нужной длины
+        set "line="
+        for /l %%I in (1, 1, %width%) do (
+            set "line=!line!#"
+        )
+
+        :: 3. Выводим строку на экран
+        echo !line!
+
+pause
+
+
+
     тесты
     ci/cd
     docker
@@ -171,11 +196,6 @@ frontend с tailwind?
 https://share.google/aimode/8DAy00vaMES72akqx
 
 TODO 
-Развернуть у себя портативный react 
-
-
-изучить способы заполнений БД
-    начнем с отображения
     
 
 
