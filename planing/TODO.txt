@@ -157,8 +157,6 @@ UserStories
 
 Понимание фундамента проекта и его конечной формы
 
-!!! ИСПРАВЬ БИЗНЕС ЛОГИКУ?
-planing\AI requests\Что ИИ думает о бизнес логике.pdf
 
 # реф похожего проекта
 https://github.com/MeetDOD/EduLearning/tree/main
