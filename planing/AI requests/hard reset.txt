@@ -1,0 +1,4 @@
+git log --oneline
+52f2d36
+git reset --hard <хэш_коммита>
+git reset --hard 52f2d36
