@@ -190,13 +190,9 @@ https://github.com/MeetDOD/EduLearning/tree/main
 
 frontend с tailwind?
 
-# найти решения по order
-
 # в процессе
 https://share.google/aimode/8DAy00vaMES72akqx
 
-TODO 
-    
 
 
 #######################################################

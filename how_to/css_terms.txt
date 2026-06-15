@@ -1,0 +1,57 @@
+/* Базовый сброс стилей */
+  /* * - все элементы */
+  /* *::before - псевдоэлементы до (виртуальные элементы) */
+  /* *::after - псевдоэлементы после (виртуальные элементы) */
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+/* Настройка таргрет бокса который через Tab */
+  *:focus-visible {
+    outline: 3px dashed #228bec;
+    outline-offset: 0;
+  }
+
+/* Для адаптивности размеров шрифта */
+  html {
+    font: 62.5% / 1.15 consolas;
+  }
+
+/* Для ios оформление кнопки */
+  button {
+    /* inherit наследуется с родителя */
+    /* в данном случае с html */
+    -moz-osx-font-smoothing: inherit;
+    -webkit-font-smoothing: inherit;
+    appearance: none;
+    background: transparent;
+    border: none;
+    color: inherit;
+    font: inherit;
+    line-height: normal;
+    margin: 0;
+    overflow: visible;
+    padding: 0;
+    width: auto;
+  }
+
+/* Решение внутреннего бага мозилы с табуляционным таргетом */
+  button::-moz-focus-inner {
+    border: 0;
+  }
+
+
+/* optgroup спец элемент выпадающий с select*/
+  <select>
+    <optgroup label="Россия">
+      <option>Москва</option>
+      <option>Новосибирск</option>
+    </optgroup>
+    <optgroup label="Беларусь">
+      <option>Минск</option>
+      <option>Брест</option>
+    </optgroup>
+  </select>
