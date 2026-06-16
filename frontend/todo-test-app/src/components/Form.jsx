@@ -1,4 +1,4 @@
-function Form() {
+function Form(props) {
   return (
     <>
       <form>
