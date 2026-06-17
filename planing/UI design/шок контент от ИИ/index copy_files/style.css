@@ -104,19 +104,6 @@ h1 {
     border-radius: 8px;
     padding: 2rem;
     box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-
-
-}
-
-.content-header {
-    max-width: 1000px;
-    margin: 0 auto 1.5em;
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-
-    padding: 0 1%;
 }
 
 .element { 

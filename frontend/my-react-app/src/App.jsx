@@ -4,18 +4,55 @@ function App() {
 
   return (
     <>
-      {/* pass */}
       <header>
-        <h2>some text in header</h2>
-      </header>     
-      <main>
-        <h2>some text in main</h2>
-        <p>Some other text</p>
-      </main> 
-      <footer>
-        <h2>some text in footer</h2>
-      </footer>
-      
+        <h3>Заголовок</h3>
+      </header>
+
+      <div class="content-header">
+        <h1 id="course-title">Поколение Python</h1>
+        <p class="course-desc" id="course-desc">В курсе рассказывается об основных типах данных, конструкциях и принципах структурного программирования языка Python. Курс содержит теорию в формате текстовых конспектов и более 500 задач с автоматизированной проверкой.</p>
+      </div>
+
+      <div class="container">
+        <aside class="sidebar">
+          <h3>Уроки курса</h3>
+          <ul class="step-list" id="step-list">
+            <li class="step-item active">Урок 1: Введение и основы</li>
+          </ul>
+        </aside>
+
+        <main class="content" id="lesson-content">
+          <div class="element theory-block">
+            <h3>Теория к уроку</h3><br/><br/>
+            В этом уроке мы разберем базовые концепции. Python — это высокоуровневый язык программирования, который отлично подходит для новичков благодаря простому синтаксису.
+          </div>
+          <div class="element test-block">
+            <div class="test-question">Вопрос по теме урока: Сколько будет 5 + 3?</div>
+            <div class="options-list">
+              <label class="option-label">
+                <input type="radio" name="test-2" value="true" />
+                Правильный ответ (8)
+              </label>
+
+              <label class="option-label">
+                <input type="radio" name="test-2" value="false" />
+                Неправильный вариант А (7)
+              </label>
+
+              <label class="option-label">
+                <input type="radio" name="test-2" value="false" />
+                Неправильный вариант Б (9)
+              </label>
+            </div>
+            <button class="btn-check" onclick="checkAnswer(2)">Проверить ответ</button>
+            <div class="feedback" id="feedback-2"></div>
+          </div>
+          <div class="element theory-block">
+            <h3>Дополнительный материал</h3><br/><br/>
+            Не забывайте практиковаться после каждого теста, чтобы закрепить материал на практике.
+          </div>
+        </main>
+      </div>
     </>
   );
 }
