@@ -1,45 +1,47 @@
-import Todo from "./components/Todo";
-import Form from "./components/Form";
-import FilterButton from "./components/FilterButton";
+import { useState, useEffect } from 'react';
 
+function App() {
+  // Создаем состояние для хранения данных курса
+  const [course, setCourse] = useState(null);
+  // Состояние для отображения процесса загрузки
+  const [loading, setLoading] = useState(true);
 
-function App(props) {
+  useEffect(() => {
+    // Функция для отправки запроса к Django API
+    fetch('http://127.0.0.1:8000/courses/') // Укажи свой URL эндпоинта
+      .then((response) => response.json())
+      .then((data) => {
+        setCourse(data); // Сохраняем данные в стейт
+        setLoading(false); // Выключаем режим загрузки
+      })
+      .catch((error) => {
+        console.error('Ошибка при получении данных:', error);
+        setLoading(false);
+      });
+  }, []); // Пустой массив означает, что запрос выполнится 1 раз при монтировании
 
-  const taskList = props.tasks?.map((task) => (
-    <Todo
-      id={task.id}
-      name={task.name}
-      completed={task.completed}
-      key={task.id} />
-  ));
+  // Если данные еще загружаются, показываем заглушку
+  if (loading) {
+    return <h1>Загрузка...</h1>;
+  }
+
+  // Если данные не пришли (например, ошибка сервера)
+  if (!course) {
+    return <h1>Ошибка загрузки курса</h1>;
+  }
 
   return (
     <>
-      <div className="todoapp stack-large">
-        <h1>TodoMatic</h1>
-        <Form />
-        <div className="filters btn-group stack-exception">
-          <FilterButton />
-          <FilterButton />
-          <FilterButton />
-          <button type="button" className="btn toggle-btn" aria-pressed="false">
-            <span className="visually-hidden">Показать </span>
-            <span>активные</span>
-            <span className="visually-hidden"> задачи</span>
-          </button>
-          <button type="button" className="btn toggle-btn" aria-pressed="false">
-            <span className="visually-hidden">Показать </span>
-            <span>завершенные</span>
-            <span className="visually-hidden"> задачи</span>
-          </button>
-        </div>
-        <h2 id="list-heading">осталось три задачи</h2>
-        <ul
-          role="list"
-          className="todo-list stack-large stack-exception"
-          aria-labelledby="list-heading">
-          {taskList}
-        </ul>
+      <header>
+        <h3>Заголовок</h3>
+      </header>
+
+      <div className="content-header">
+        {/* Подставляем данные из API динамически */}
+        <h1 id="course-title">{course[0].title}</h1>
+        <p className="course-desc" id="course-desc">
+          {course[0].description}
+        </p>
       </div>
     </>
   );
