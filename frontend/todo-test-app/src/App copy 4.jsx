@@ -1,7 +1,6 @@
 import Form from "./components/Form";
 import FilterButton from "./components/FilterButton";
 import Todo from "./components/Todo";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App(props) {
   const taskList = props.tasks?.map((task) => (
