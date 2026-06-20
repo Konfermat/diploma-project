@@ -4,7 +4,8 @@ from . import views
 urlpatterns = [
     # Курсы
     path('courses/', views.course_list, name='course-list'),
-    path('courses/<int:pk>/', views.course_detail, name='course-detail'),  # Исправлено: заменен синтаксис и добавлен слэш
+    path('course_titles/', views.course_title_list, name='course-title-list'),
+    path('courses/<int:pk>/', views.course_detail, name='course-detail'),  
     
     # Сортировка шагов курса
     path('courses/<int:course_id>/reorder_steps/', views.reorder_steps, name='reorder-steps'),  # Исправлено: <int:course_id>

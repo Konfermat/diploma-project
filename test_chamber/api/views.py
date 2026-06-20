@@ -18,6 +18,10 @@ def course_list(request):
     courses = Course.objects.all()
     serializer = CourseSerializer(courses, many=True)
     return Response(serializer.data)
+@api_view(['GET'])
+def course_title_list(request):
+    titles = Course.objects.values_list('title', flat=True)
+    return Response(list(titles))
 
 
 @api_view(['GET'])
@@ -55,6 +59,7 @@ def test_element_list(request):
     return Response(serializer.data)
 
 
+# Протестируй
 @api_view(['POST'])
 def reorder_steps(request, course_id):
     try:

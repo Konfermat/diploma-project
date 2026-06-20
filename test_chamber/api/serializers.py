@@ -108,6 +108,11 @@ class CourseSerializer(serializers.ModelSerializer):
             'created_at',
             'steps',
         )
+class CourseTitleSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = (
+            'title'
+        )
 
 
 # Наследуемся от обычного Serializer, так как валидируем просто абстрактный JSON с фронтенда
