@@ -273,6 +273,21 @@ pause
 Что если я захочу начать все заново?
     подумай хорошенько. Есть ли у тебя такая роскошь как время?
 
+REM сделать также на другом компе
+    @echo off
+    cd /d D:\Programming\Web_Developer\workbench\repos\diploma-project\backend\test_chamber
+    title backend
+
+    @echo off
+    cd /d D:\Programming\Web_Developer\workbench\repos\diploma-project\frontend\my-react-app
+    title frontend
+
+    @echo off
+    cd /d D:\Programming\Web_Developer\workbench\repos\diploma-project\frontend\todo-test-app
+    title frontend1
+
+
+
 #######################################################
 Не актуально:
 -------------------------------------------------------
