@@ -22,3 +22,5 @@
     # я сделал так
     npm run dev
 
+# 
+react-router-dom

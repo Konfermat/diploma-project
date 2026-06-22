@@ -15,6 +15,7 @@ javascript:(function(){document.querySelectorAll('div.y4VEUd.vve6Ce, div[data-xi
 
 javascript:(function(){const s = document.querySelectorAll('section'); document.body.innerHTML = ''; s.forEach(el => document.body.appendChild(el));
 document.querySelectorAll('div.y4VEUd.vve6Ce').forEach(el => el.remove());
+document.querySelectorAll('div.BTkBWc').forEach(el => el.remove());
 document.querySelectorAll('pre, code').forEach(el => el.style.whiteSpace = 'pre-wrap');
 document.querySelectorAll('div[data-xid="m3fCN"]').forEach(el => el.remove());})();
 
