@@ -3,8 +3,6 @@ User flow
         Может ознакомится
     Учитель
 
-
-
     Ученик 
 
     Учитель создал Урок
@@ -37,4 +35,5 @@ AI questions
         Привет. Можешь помочь с одной задачей?
         Я пишу backend на python django rest framework.
 
-        
+Привет. Можешь помочь с одной задачей?
+Я пишу backend на python django rest framework.

@@ -93,7 +93,6 @@ class TestElement(models.Model):
             raise ValidationError("Родительский элемент должен иметь тип 'TEST'.")
         super().save(*args, **kwargs)
 
-
 class TestOption(models.Model):
     test_element = models.ForeignKey(TestElement, on_delete=models.CASCADE, related_name='options')
     is_correct = models.BooleanField(default=False)
