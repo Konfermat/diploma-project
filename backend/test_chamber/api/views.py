@@ -6,7 +6,9 @@ from api.serializers import (
     TextElementSerializer, TestElementSerializer, ReorderIdsSerializer, 
     StepElementCreateSerializer
 )
-from api.models import Course, Step, StepElement, TextElement, TestElement, TestOption
+from api.models import (Course, Step, StepElement, 
+                        TextElement, TestElement, TestOption
+)
 
 from rest_framework import status  
 from rest_framework.response import Response

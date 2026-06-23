@@ -1,0 +1,11 @@
+npm create vite@latest frontend -- --template react
+cd test-app
+npm install
+npm run dev
+pip install -r requirements.txt
+django-admin startproject musicmood
+cd musicmood
+python manage.py startapp favorites
+python manage.py startapp tracks
+python manage.py makemigrations
+python manage.py migrate

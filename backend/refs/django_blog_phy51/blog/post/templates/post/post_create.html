@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}Добавление поста{% endblock %}
+{% block content %}
+    <h1>Создать пост</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">Опубликовать</button>
+        <a href="{% url 'post_list' %}">Отмена</a>
+    </form>
+{% endblock %}

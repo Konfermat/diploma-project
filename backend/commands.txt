@@ -7,4 +7,3 @@ py manage.py runserver
 # python manage.py runserver # стал работать нормально
 
 python manage.py check # проверка на наличие ошибок?
-

@@ -1,0 +1,23 @@
+pip install django
+django-admin startproject blog
+blog-проект (все выполняем из этой папки)
+cd blog
+python manage.py startapp post
+python manage.py startapp userAcc
+python manage.py startapp userProfile
+- создает приложение внутри проекта django
+ПЕРВЫМ ДЕЛОМ ЗАРЕГИСТРИРОВАТЬ в settings.py в INSTALLED_APPS
+python manage.py makemigrations  --создаст файлы миграции
+python manage.py migrate    --проводит миграции
+python manage.py createsuperuser
+python manage.py runserver
+ctrl c -остановить сервер
+http://127.0.0.1:8000/admin/
+
+
+MVC - MVT
+Model - БД
+forms.py
+View  - обработка запросов
+urls.py
+Template - представления(шаблоны)

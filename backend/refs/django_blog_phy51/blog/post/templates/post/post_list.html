@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load post_extras %}
+{% block title %}Лента новостей{% endblock %}
+{% block content %}
+<h1>Лента новостей</h1>
+{% if user.is_authenticated %}
+    <a href="{% url 'create_post' %}">Новый пост</a>
+{% endif %}
+{% for post in posts %}
+    <div>
+        <a href="{% url 'post_details' post.id %}">{{ post.title }}</a>
+        <h4>Автор: {{ post.author }}</h4>
+        <small>Опубликован {{ post.created_at|smart_time }}</small>
+    </div>
+{% endfor %}
+{% endblock %}

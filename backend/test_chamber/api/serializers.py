@@ -5,10 +5,10 @@ from .models import Course, User, Step, StepElement, TextElement, TestElement, T
 class TestOptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = TestOption
-        fields = [
+        fields = (
             'answer', 
             'is_correct'
-        ]
+        )
 
 
 class TestElementSerializer(serializers.ModelSerializer):
@@ -16,10 +16,10 @@ class TestElementSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TestElement
-        fields = [
+        fields = (
             'question', 
             'options'
-        ]
+        )
 
 
 class TextElementSerializer(serializers.ModelSerializer):

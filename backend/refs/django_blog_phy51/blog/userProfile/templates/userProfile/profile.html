@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Профиль{% endblock %}
+{% block content %}
+<h1>Профиль {{ user.username }}</h1>
+{% if profile.bio %}
+    <p>{{ profile.bio }}</p>
+{% else %}
+    <p>Добавьте описание профиля</p>
+{% endif %}
+{% if profile.avatar %}
+    <img src="{{ profile.avatar.url }}">
+{% endif %}
+<a href="{% url 'profile_edit' %}">Редактировать профиль</a>
+
+{% endblock %}
