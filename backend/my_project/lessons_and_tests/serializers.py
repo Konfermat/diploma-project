@@ -49,7 +49,7 @@ class LessonPartShortSerializer(serializers.ModelSerializer):
 # 6. СЕРИАЛИЗАТОР ДЛЯ КАРТОЧКИ УРОКА (На главной странице)
 class LessonListSerializer(serializers.ModelSerializer):
     # Выводим строковое имя автора вместо числового ID
-    user = serializers.ReadOnlyField(source='user.username')
+    user = serializers.ReadOnlyField(source='created_by.username')
     # Поле подтянет значение из .annotate(parts_count=Count('parts')) во views.py
     parts_count = serializers.IntegerField(read_only=True)
 
@@ -60,7 +60,7 @@ class LessonListSerializer(serializers.ModelSerializer):
 
 # 7. СЕРИАЛИЗАТОР ДЕТАЛЕЙ УРОКА (Выдает метаданные урока + список его частей для меню)
 class LessonDetailSerializer(serializers.ModelSerializer):
-    user = serializers.ReadOnlyField(source='user.username')
+    user = serializers.ReadOnlyField(source='created_by.username')
     # Используем созданный выше компактный сериализатор частей
     parts = LessonPartShortSerializer(many=True, read_only=True)
 

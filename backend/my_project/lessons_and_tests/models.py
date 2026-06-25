@@ -7,12 +7,6 @@ from django.contrib.auth.models import AbstractUser
 # --- БЛОК ЮЗЕРА ---
 class User(AbstractUser):
     created_at = models.DateTimeField(auto_now_add=True)
-    completed_lessons = models.ManyToManyField(
-        'Lesson', 
-        blank=True, 
-        related_name='completed_by',
-        verbose_name="Пройденные уроки"
-    )
 
     def __str__(self):
         return self.username
@@ -22,11 +16,10 @@ class User(AbstractUser):
 class Lesson(models.Model):
     title = models.CharField(max_length=255, verbose_name="Название урока")
     created_at = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='lessons')
+    # Переименовали поле. related_name='lessons' оставляем — оно идеально
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='lessons')
     is_published = models.BooleanField(default=False)
 
-    def __str__(self):
-        return self.title
 
 
 class LessonPart(models.Model):
@@ -104,3 +97,5 @@ class UserTestAnswer(models.Model):
 
     def __str__(self):
         return f"{self.user.username} -> Тест {self.test.id} ({'Верно' if self.is_correct else 'Неверно'})"
+
+    

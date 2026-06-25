@@ -2,12 +2,30 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import User, Lesson, LessonPart, Text, Test, TestOption, UserTestAnswer
 
-# Регистрируем кастомного пользователя, чтобы видеть дату его создания
+# Регистрируем кастомного пользователя
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
     list_display = ('username', 'email', 'is_staff', 'created_at')
-    # Добавляем наше поле пройденных уроков в интерфейс админки
+    
+    # ИСПРАВЛЕНО: Так как создано через auto_now_add, это поле должно быть read-only
+    readonly_fields = ('created_at',) 
+    
+    # Добавляем поле пройденных уроков в интерфейс админки
     filter_horizontal = ('completed_lessons',)
+    
+    # ИСПРАВЛЕНО: Внедряем кастомные поля в стандартную структуру UserAdmin
+    fieldsets = UserAdmin.fieldsets + (
+        ('Дополнительная информация', {
+            'fields': ('completed_lessons', 'created_at')
+        }),
+    )
+    
+    # ИСПРАВЛЕНО: Добавляем поля в форму создания нового пользователя, если это необходимо
+    add_fieldsets = UserAdmin.add_fieldsets + (
+        ('Дополнительная информация', {
+            'fields': ('completed_lessons',)
+        }),
+    )
 
 
 # --- ИНЛАЙНЫ ДЛЯ СВЯЗАННЫХ ТАБЛИЦ ---
@@ -35,7 +53,7 @@ class TestInline(admin.TabularInline):
 
 @admin.register(Lesson)
 class LessonAdmin(admin.ModelAdmin):
-    list_display = ('title', 'user', 'is_published', 'created_at')
+    list_display = ('title', 'created_by', 'is_published', 'created_at')
     list_filter = ('is_published', 'created_at')
     search_fields = ('title',)
 
@@ -59,5 +77,10 @@ class TestAdmin(admin.ModelAdmin):
 # Регистрируем историю ответов только для просмотра (read-only)
 @admin.register(UserTestAnswer)
 class UserTestAnswerAdmin(admin.ModelAdmin):
-    list_display = ('user', 'test', 'is_correct', 'created_at')
-    readonly_fields = ('user', 'test', 'chosen_option', 'is_correct', 'created_at')
+    list_display = ('created_by', 'test', 'is_correct', 'created_at')
+    readonly_fields = ('created_by', 'test', 'chosen_option', 'is_correct', 'created_at')
+    
+    # РЕКОМЕНДАЦИЯ: Запрещаем создавать записи вручную через админку, 
+    # так как это чисто лог/история действий пользователя
+    def has_add_permission(self, request):
+        return False

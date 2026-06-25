@@ -81,7 +81,7 @@ def lesson_list_view(request):
     # 1. select_related('user') сразу подгружает авторов (избегаем N+1 для юзеров)
     # 2. annotate(parts_count=Count('parts')) считает количество частей прямо на уровне базы данных SQL
     lessons = Lesson.objects.filter(is_published=True)\
-                            .select_related('user')\
+                            .select_related('created_by')\
                             .annotate(parts_count=Count('parts'))\
                             .order_by('-created_at')
     
