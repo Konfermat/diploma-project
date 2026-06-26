@@ -1,223 +1,207 @@
+
+
+
+
+
+/* Переменные по умолчанию (Светлая тема) */
 :root {
-    --primary: #2b6cb0;
-    --primary-hover: #2c5282;
-    --success: #38a169;
-    --error: #e53e3e;
-    --bg: #f7fafc;
-    --card-bg: #ffffff;
-    --text: #2d3748;
-    --text-muted: #718096;
-    --border: #e2e8f0;
+  --bg-main: #ecf1fc;
+  --bg-card: #ffffff;
+  --text-primary: #333333;
+  --text-secondary: #666666;
+  --border-color: #cccccc;
+  --color-primary: #007bff;
+  --color-hover: #0056b3;
+  --color-focus: rgba(0, 123, 255, 0.15);
+  --input-placeholder: #ffffff;
+  --box-shadow: #AAAAAA;
 }
 
+/* Переменные для Тёмной темы (перезаписываем значения) */
+:root.dark {
+  --bg-main: #375a7f;        
+  --bg-card: #173444;        
+  --text-primary: #ffffff;   
+  --text-secondary: #aaaaaa; 
+  --border-color: #444444;   
+  --color-primary: #375a7f;  
+  --color-hover: #2b4764;
+  --color-focus: rgba(55, 90, 127, 0.3);
+  --input-placeholder: #ffffff;
+  --box-shadow: #f0f0f0;
+}
+
+/* Добавим плавность перехода при смене темы */
+body, .container, input, button, p {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Кнопка переключения темы (стили) */
+.theme-toggle {
+  background-color: var(--bg-card);
+  position: absolute;
+  top: 30px;
+  right: 20px;
+  padding: 8px 16px;
+  cursor: pointer;
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+/* Используем переменные через функцию var() */
+body-copy {
+  margin: 0;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-main); /* Используем переменную */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* Используем переменные через функцию var() */
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background-color: var(--bg);
-    color: var(--text);
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-main); /* Используем переменную */
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
-header {
-    background-color: var(--card-bg);
-    border-bottom: 1px solid var(--border);
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+.app-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .container {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 1rem;
-    display: grid;
-    grid-template-columns: 280px 1fr;
-    gap: 2rem;
+  background-color: var(--bg-card);
+  padding: 40px;
+  margin: 100px auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px var(--box-shadow);
+  width: 100%;
+  max-width: 400px;
+  box-sizing: border-box;
 }
 
-@media (max-width: 768px) {
-    .container {
-        grid-template-columns: 1fr;
-    }
+.container h2 {
+  margin-top: 0;
+  margin-bottom: 24px;
+  color: var(--text-primary);
+  font-size: 24px;
+  text-align: center;
 }
 
-h1 { 
-    margin: 0 0 0.5rem 0; 
-    font-size: 1.8rem; 
-    color: var(--primary); 
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.course-desc { 
-    margin: 0; 
-    color: var(--text-muted); 
-    font-size: 0.95rem; 
+input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 16px;
+  box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background-color: var(--input-placeholder);
 }
 
-.sidebar {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 1rem;
-    height: fit-content;
+input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-focus);
+  outline: none;
 }
 
-.sidebar h3 { 
-    margin-top: 0; 
-    font-size: 1.1rem; 
-    border-bottom: 1px solid var(--border); 
-    padding-bottom: 0.5rem; 
+
+
+button[type="submit"] {
+  background-color: var(--color-primary);
+  color: var(--input-placeholder);
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 8px;
 }
 
-.step-list { 
-    list-style: none; 
-    padding: 0; 
-    margin: 0; 
+button[type="submit"]:hover {
+  background-color: var(--color-hover);
 }
 
-.list { 
-    list-style: none; 
-    padding: 0; 
-    margin: 0; 
-}
-.list.active { 
-    background-color: #ebf8ff; 
-    color: var(--primary); 
-    border-color: #bee3f8; 
+p {
+  margin-top: 24px;
+  margin-bottom: 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 14px;
 }
 
-.step-item {
-    padding: 0.75rem 1rem;
-    margin-bottom: 0.5rem;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-size: 0.9rem;
-    font-weight: 500;
-    border: 1px solid transparent;
+.link-btn {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
 }
 
-.step-item:hover { 
-    background-color: var(--bg); 
+.link-btn:hover {
+  color: var(--color-hover);
 }
 
-.step-item.active { 
-    background-color: #ebf8ff; 
-    color: var(--primary); 
-    border-color: #bee3f8; 
+
+
+/* Обёртка для всего экрана, чтобы выстроить header и контент друг под другом */
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100vw;
 }
 
-/* Контентная зона */
-.content {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 2rem;
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-
-
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 40px;
+  background-color: var(--bg-card);
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
 }
 
-.content-header {
-    max-width: 1000px;
-    margin: 0 auto 1.5em;
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-    padding: 0 1%;
+header h3 {
+  margin: 0;
 }
 
-.element { 
-    margin-bottom: 2rem; 
+/* Контейнер с формами теперь занимает оставшуюся часть экрана и центрирует их */
+.app-container {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.element:last-child { 
-    margin-bottom: 0; 
+/* Стили для кнопки темы внутри хедера */
+.theme-toggle {
+  padding: 8px 16px;
+  cursor: pointer;
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  font-weight: 600;
+  transition: all 0.2s ease;
 }
-
-/* Стили для текста (теория) */
-.theory-block {
-    background: #fff;
-    padding: 0.5rem 0;
-}
-
-.theory-block h3 { 
-    color: var(--primary); 
-    margin-top: 0; 
-}
-
-/* Стили для теста */
-.test-block {
-    background: #f8fafc;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 1.5rem;
-}
-
-.test-question { 
-    font-weight: 600; 
-    margin-bottom: 1rem; 
-    font-size: 1.05rem; 
-}
-
-.options-list { 
-    display: flex; 
-    flex-direction: column; 
-    gap: 0.75rem; 
-}
-
-.option-label {
-    display: flex;
-    align-items: center;
-    padding: 0.75rem 1rem;
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-.option-label:hover { 
-    background: #f1f5f9; 
-}
-
-.option-label input { 
-    margin-right: 10px; 
-}
-
-.btn-check {
-    margin-top: 1rem;
-    background: var(--primary);
-    color: white;
-    border: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
-}
-
-.btn-check:hover { 
-    background: var(--primary-hover); 
-}
-
-.feedback {
-    margin-top: 1rem;
-    padding: 0.75rem;
-    border-radius: 6px;
-    font-weight: 500;
-    display: none;
-}
-
-.feedback.success { 
-    display: block; 
-    background: #c6f6d5; 
-    color: #22543d; 
-}
-
-.feedback.error { 
-    display: block; 
-    background: #fed7d7; 
-    color: #742a2a; 
-}
-

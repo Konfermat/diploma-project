@@ -2,7 +2,7 @@ import Header from '../components/Header.jsx';
 import { useState, useEffect } from 'react';
 import api from '../data/api.js';
 
-function Courses(props) {
+export default function Courses(props) {
   // Изначально стейт пуст
   const [courseTitles, setCourseTitles] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -47,4 +47,3 @@ function Courses(props) {
   );  
 }
 
-export default Courses;

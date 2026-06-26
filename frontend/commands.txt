@@ -24,3 +24,6 @@
 
 # 
 react-router-dom
+
+# структура папок и файлов
+tree /F

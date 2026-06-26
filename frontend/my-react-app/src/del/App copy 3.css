@@ -1,0 +1,112 @@
+/* До тёмной темы */
+/* 1. Объявляем переменные в самом верху для всего документа */
+:root {
+  --bg-main: #f4f7f6;        /* Светло-серый фон страницы */
+  --bg-card: #ffffff;        /* Белый фон карточки */
+  --text-primary: #333333;   /* Темно-серый текст заголовков */
+  --text-secondary: #666666; /* Серый текст подсказок */
+  --border-color: #cccccc;   /* Цвет рамок инпутов */
+  
+  /* Акцентные цвета (кнопки и фокус) */
+  --color-primary: #007bff;  /* Синий цвет */
+  --color-hover: #0056b3;    /* Темно-синий для наведения */
+  --color-focus: rgba(0, 123, 255, 0.15); /* Свечение вокруг инпута */
+}
+
+/* 2. Используем переменные через функцию var() */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-main); /* Используем переменную */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.app-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  background-color: var(--bg-card);
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 400px;
+  box-sizing: border-box;
+}
+
+.container h2 {
+  margin-top: 0;
+  margin-bottom: 24px;
+  color: var(--text-primary);
+  font-size: 24px;
+  text-align: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 16px;
+  box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-focus);
+  outline: none;
+}
+
+button[type="submit"] {
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 8px;
+}
+
+button[type="submit"]:hover {
+  background-color: var(--color-hover);
+}
+
+p {
+  margin-top: 24px;
+  margin-bottom: 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.link-btn:hover {
+  color: var(--color-hover);
+}

@@ -1,7 +1,7 @@
 import Header from '../components/Header.jsx'
 import { useState } from 'react'
 
-function Template(props) {
+export default function Template(props) {
     // Развертывание теста
   const [isOpen, setIsOpen] = useState(false);  
   return (
@@ -80,4 +80,3 @@ function Template(props) {
     </>
   );  
 }
-export default Template;
