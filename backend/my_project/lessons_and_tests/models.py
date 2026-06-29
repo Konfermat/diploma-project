@@ -16,7 +16,6 @@ class User(AbstractUser):
 class Lesson(models.Model):
     title = models.CharField(max_length=255, verbose_name="Название урока")
     created_at = models.DateTimeField(auto_now_add=True)
-    # Переименовали поле. related_name='lessons' оставляем — оно идеально
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='lessons')
     is_published = models.BooleanField(default=False)
 
@@ -78,7 +77,7 @@ class TestOption(models.Model):
     answer = models.TextField(blank=True)
     is_correct = models.BooleanField(default=False)
     order = models.PositiveIntegerField(default=1, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)  # Добавлено для консистентности
+    created_at = models.DateTimeField(auto_now_add=True)  # Добавлено чтоб у всех было
 
     class Meta:
         ordering = ['order', 'id']
