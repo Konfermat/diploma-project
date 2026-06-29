@@ -205,3 +205,45 @@ header h3 {
   font-weight: 600;
   transition: all 0.2s ease;
 }
+
+/* ==========================================================================
+   СТИЛИ ДЛЯ ОШИБОК ВАЛИДАЦИИ ФОРМЫ
+   ========================================================================== */
+
+/* Вертикальный контейнер для инпута и ошибки, чтобы они не ломали форму */
+form > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+/* Красный текст ошибки под инпутом с подчеркиванием */
+.error-text {
+  color: #e74c3c; /* Мягкий красный цвет */
+  font-size: 13px;
+  text-align: left;
+  padding-left: 4px;
+  text-decoration: underline; /* Подчеркивание текста ошибки */
+  text-underline-offset: 3px; /* Небольшой отступ подчеркивания от букв */
+  font-weight: 500;
+}
+
+/* Красная рамка для инпута, если внутри его контейнера появился элемент .error-text */
+form > div:has(.error-text) input {
+  border-color: #e74c3c;
+}
+
+/* Красное свечение при фокусе на инпуте с ошибкой */
+form > div:has(.error-text) input:focus {
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
+  outline: none;
+}
+
+/* Стили для заблокированной кнопки (пока форма заполнена неверно) */
+button[type="submit"]:disabled {
+  background-color: var(--border-color);
+  color: var(--text-secondary);
+  cursor: not-allowed;
+  opacity: 0.6;
+}

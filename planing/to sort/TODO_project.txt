@@ -77,6 +77,8 @@ OwO - тег
 
 
     Писать больше комментариев в коде так чтобы сам понимал 
+    Совет на будущее по проектированию
+        фвыа
 
 #######################################################
 Актуально:
@@ -352,8 +354,8 @@ OwO - тег
     User Stories
     User Flow
 
-https://share.google/aimode/Grt9jkp423bs7qDJz
-
+https://share.google/aimode/6rxfTCiEaOu9q7AeB
+https://share.google/aimode/OkyNQR36B6p2Xo6qi
 
 #######################################################
 Не актуально:

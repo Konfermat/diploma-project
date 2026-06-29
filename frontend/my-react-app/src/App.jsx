@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 
 import Template from './routes/Template.jsx'
 import Register from './routes/Register.jsx'
+import Profile from './routes/Profile.jsx'
 import Login from './routes/Login.jsx'
 import Test from './routes/Test.jsx'
 
@@ -40,6 +41,7 @@ export default function App() {
         <Route path="/register" element={ <Register /> } />
         <Route path="/login" element={ <Login /> } />
         <Route path="/test" element={ <Test /> } />
+        <Route path="/profile" element={ <Profile /> } />
       </Routes>
     </BrowserRouter>
   );
