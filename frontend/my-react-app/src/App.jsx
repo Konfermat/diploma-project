@@ -1,3 +1,5 @@
+import ProtectedRoute from './components/ProtectedRoute.jsx';
+
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { useState, useEffect } from 'react'
 
@@ -40,8 +42,13 @@ export default function App() {
         <Route path="/template" element={ <Template /> } />
         <Route path="/register" element={ <Register /> } />
         <Route path="/login" element={ <Login /> } />
-        <Route path="/test" element={ <Test /> } />
-        <Route path="/profile" element={ <Profile /> } />
+
+        {/* <Route path="/test" element={ <Test /> } /> */}
+        <Route path="/profile" element={ 
+          <ProtectedRoute>
+            <Profile /> 
+          </ProtectedRoute>
+          } />
       </Routes>
     </BrowserRouter>
   );

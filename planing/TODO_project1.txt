@@ -1,6 +1,16 @@
 Название дипломного проекта:
     "Уроки и Тесты" или Lessons and Tests
 
+frontend
+https://share.google/aimode/HCadbmeRfB14Rxjq6
+
+
+
+# backend вход
+https://share.google/aimode/TtAIesPYHS3crEj6b
+
+https://share.google/aimode/wcHNIGsIQ0lu3NXEs
+
 ---------------------------------------------------------------------
 #####################################################################
 
@@ -42,7 +52,8 @@
          
 
 
-эндпонты
+эндпонты?
+
     Главная страница:
         хедер тулбокс
             Лого
@@ -85,6 +96,7 @@
     Результат прохождения урока:
         Оценка, время.
 
+
 # помни про продать за 7 минут.
 
 # реализуй из того что есть.
@@ -101,10 +113,27 @@ https://css-tricks.com
 # Продать в закулисье
 НА все по три минуты.
 
+
+
 Wireframe
-    hom
-    
-https://share.google/aimode/HCadbmeRfB14Rxjq6
+    home
 
-https://share.google/aimode/OkyNQR36B6p2Xo6qi
+Database blueprint
+    pass
 
+UserFlow
+    pass
+
+UserStory
+    pass
+
+urls
+    pass
+
+API
+    pass
+
+UI
+    pass
+
+# https://share.google/aimode/dcSqIhz4ulx6WJM7j

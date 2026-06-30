@@ -6,8 +6,7 @@ from django.contrib.auth.models import AbstractUser
 
 # --- БЛОК ЮЗЕРА ---
 class User(AbstractUser):
-    created_at = models.DateTimeField(auto_now_add=True)
-
+    pass
     def __str__(self):
         return self.username
 
@@ -18,8 +17,6 @@ class Lesson(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='lessons')
     is_published = models.BooleanField(default=False)
-
-
 
 class LessonPart(models.Model):
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name='parts')

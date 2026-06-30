@@ -1,16 +1,19 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; 
+import API from '../api/axios'; 
 
 export default function Login() {
-  // Переменные приведены к стандарту camelCase
-  const [data, setData] = useState({ email: '', password: '' });
+  const navigate = useNavigate(); 
+  
+  const [data, setData] = useState({ username: '', password: '' });
   const [errors, setErrors] = useState({});
+  const [serverError, setServerError] = useState(''); 
 
   const validate = (name, value) => {
     let errorText = '';
 
-    if (name === 'email' && !/\S+@\S+\.\S+/.test(value)) {
-      errorText = 'Неверный формат email';
+    if (name === 'username' && value.trim().length < 3) {
+      errorText = 'Имя пользователя слишком короткое';
     }
     if (name === 'password' && value.length < 6) {
       errorText = 'Пароль слишком короткий';
@@ -26,23 +29,46 @@ export default function Login() {
     validate(name, value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Данные для входа:', data);
-    alert('Вы успешно вошли!');
+    setServerError(''); 
+
+    try {
+      const response = await API.post('token/', {
+        username: data.username,
+        password: data.password
+      });
+
+      if (response.data.access) {
+        localStorage.setItem('access_token', response.data.access);
+        localStorage.setItem('refresh_token', response.data.refresh);
+        
+        navigate('/profile');
+      }
+    } catch (err) {
+      console.error(err);
+      if (err.response && err.response.status === 401) {
+        setServerError('Неверное имя пользователя или пароль');
+      } else {
+        setServerError('Произошла ошибка на сервере. Попробуйте позже.');
+      }
+    }
   };
 
   const isFormInvalid = 
-    !data.email || !data.password || 
+    !data.username || !data.password || 
     Object.values(errors).some(error => error !== '');
 
   return (
     <div className="container">
       <h2>Вход в аккаунт</h2>
+      
+      {serverError && <div className="error-summary" style={{color: 'red', marginBottom: '10px'}}>{serverError}</div>}
+      
       <form onSubmit={handleSubmit}>
         <div>
-          <input type="email" name="email" placeholder="Email" value={data.email} onChange={handleChange} required />
-          {errors.email && <span className="error-text">{errors.email}</span>}
+          <input type="text" name="username" placeholder="Имя пользователя" value={data.username} onChange={handleChange} required />
+          {errors.username && <span className="error-text">{errors.username}</span>}
         </div>
 
         <div>

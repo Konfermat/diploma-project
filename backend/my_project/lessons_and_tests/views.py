@@ -3,14 +3,31 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated, AllowAny
 from django.shortcuts import get_object_or_404
+from django.db.models import Count 
 
-from .models import LessonPart, Test, TestOption, UserTestAnswer
-from .serializers import LessonPartDetailSerializer, RegisterSerializer
+from .models import Lesson, LessonPart, Test, TestOption, UserTestAnswer 
+
+from .serializers import (
+    LessonPartDetailSerializer, 
+    RegisterSerializer, 
+    LessonListSerializer, 
+    LessonDetailSerializer
+)
 
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])  # Строго для авторизованных
+def profile_view(request):
+    user = request.user
+    return Response({
+        "username": user.username,
+        "email": user.email,
+        "is_staff": user.is_staff,
+        "date_joined": user.date_joined.strftime("%d.%m.%Y %H:%M")  # Красивый формат даты
+    }, status=status.HTTP_200_OK)
 
 
-# 1. ПОЛУЧЕНИЕ КОНТЕНТА ЧАСТИ УРОКА (Функция)
+# ПОЛУЧЕНИЕ КОНТЕНТА ЧАСТИ УРОКА (Функция)
 @api_view(['GET'])
 @permission_classes([IsAuthenticatedOrReadOnly])
 def lesson_part_detail_view(request, pk):
@@ -29,7 +46,7 @@ def lesson_part_detail_view(request, pk):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-# 2. ПРОВЕРКА ОТВЕТА НА ТЕСТ (Функция)
+# ПРОВЕРКА ОТВЕТА НА ТЕСТ (Функция)
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def submit_test_answer_view(request):
