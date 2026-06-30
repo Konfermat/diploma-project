@@ -1,7 +1,10 @@
 
 export default function Profile() {
     return (
-        <p>Salam aleyky</p>
+        <div className='container'>
+          <h2>Профиль аккаунта</h2>
+          <p>Salam aleyky</p>
+        </div>
     );
 
 };
