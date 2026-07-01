@@ -5,26 +5,44 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticate
 from django.shortcuts import get_object_or_404
 from django.db.models import Count 
 
-from .models import Lesson, LessonPart, Test, TestOption, UserTestAnswer 
+from .models import (
+    Lesson, 
+    LessonPart, 
+    Test, 
+    TestOption, 
+    UserTestAnswer,
+    User
+)
 
 from .serializers import (
     LessonPartDetailSerializer, 
     RegisterSerializer, 
     LessonListSerializer, 
-    LessonDetailSerializer
+    LessonDetailSerializer,
+    UserDetailSerializer
 )
 
+ 
+# сделай через сериализатор?
+# @api_view(['GET'])
+# @permission_classes([IsAuthenticated])  # Строго для авторизованных
+# def profile_view(request):
+#     user = request.user
+#     return Response({
+#         "id": user.id,
+#         "username": user.username,
+#         "email": user.email,
+#         "is_staff": user.is_staff,
+#         "date_joined": user.date_joined.strftime("%d.%m.%Y %H:%M")  # Красивый формат даты
+#     }, status=status.HTTP_200_OK)
 
+# Юзер по Id
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])  # Строго для авторизованных
-def profile_view(request):
-    user = request.user
-    return Response({
-        "username": user.username,
-        "email": user.email,
-        "is_staff": user.is_staff,
-        "date_joined": user.date_joined.strftime("%d.%m.%Y %H:%M")  # Красивый формат даты
-    }, status=status.HTTP_200_OK)
+# @permission_classes([IsAuthenticated])  # Строго для авторизованных
+def user_detail_view(request, pk):
+    user = get_object_or_404(User, pk=pk)
+    serializer = UserDetailSerializer(user)
+    return Response(serializer.data, status.HTTP_200_OK)
 
 
 # ПОЛУЧЕНИЕ КОНТЕНТА ЧАСТИ УРОКА (Функция)

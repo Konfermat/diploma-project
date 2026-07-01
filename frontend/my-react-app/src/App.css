@@ -39,10 +39,7 @@ body, .container, input, button, p {
 /* Кнопка переключения темы (стили) */
 .theme-toggle {
   background-color: var(--bg-card);
-  position: absolute;
-  top: 30px;
-  right: 20px;
-  padding: 8px 16px;
+  position: static;
   cursor: pointer;
   color: var(--text-primary);
   border: 1px solid var(--border-color);

@@ -38,13 +38,16 @@ export default function App() {
       <Header isDarkMode={isDarkMode} onToggleTheme={() => setIsDarkMode(!isDarkMode)} />
 
       <Routes>
+        {/* Публичные руты */}
         <Route path="/" element={ <Template /> } />
         <Route path="/template" element={ <Template /> } />
         <Route path="/register" element={ <Register /> } />
         <Route path="/login" element={ <Login /> } />
 
         {/* <Route path="/test" element={ <Test /> } /> */}
-        <Route path="/profile" element={ 
+        
+        {/* Приватныые руты */}
+        <Route path="/profile/:id" element={ 
           <ProtectedRoute>
             <Profile /> 
           </ProtectedRoute>

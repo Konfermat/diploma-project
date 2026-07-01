@@ -1,8 +1,15 @@
 from rest_framework import serializers
-from .models import Lesson, LessonPart, Text, Test, TestOption
+from .models import (
+    Lesson, 
+    LessonPart, 
+    Text, 
+    Test, 
+    TestOption, 
+    User
+    )
 
 
-# 1. СЕРИАЛИЗАТОР ВАРИАНТОВ ОТВЕТОВ
+# СЕРИАЛИЗАТОР ВАРИАНТОВ ОТВЕТОВ
 class TestOptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = TestOption
@@ -11,7 +18,7 @@ class TestOptionSerializer(serializers.ModelSerializer):
         fields = ['id', 'answer', 'order']
 
 
-# 2. СЕРИАЛИЗАТОР ТЕСТОВ (Включает в себя варианты ответов)
+# СЕРИАЛИЗАТОР ТЕСТОВ (Включает в себя варианты ответов)
 class TestSerializer(serializers.ModelSerializer):
     # Подтягиваем связанные варианты ответов через related_name='options'
     options = TestOptionSerializer(many=True, read_only=True)
@@ -21,14 +28,14 @@ class TestSerializer(serializers.ModelSerializer):
         fields = ['id', 'question', 'order', 'options']
 
 
-# 3. СЕРИАЛИЗАТОР ТЕКСТОВ
+# СЕРИАЛИЗАТОР ТЕКСТОВ
 class TextSerializer(serializers.ModelSerializer):
     class Meta:
         model = Text
         fields = ['id', 'lesson_material', 'order']
 
 
-# 4. СЕРИАЛИЗАТОР ДЕТАЛЕЙ ЧАСТИ УРОКА (Тексты + Тесты для центрального прямоугольника)
+# СЕРИАЛИЗАТОР ДЕТАЛЕЙ ЧАСТИ УРОКА (Тексты + Тесты для центрального прямоугольника)
 class LessonPartDetailSerializer(serializers.ModelSerializer):
     # Объединяем тексты и тесты внутри одной части урока через их related_name
     texts = TextSerializer(many=True, read_only=True)
@@ -39,7 +46,7 @@ class LessonPartDetailSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'order', 'texts', 'tests']
 
 
-# 5. СЕРИАЛИЗАТОР ЧАСТЕЙ УРОКА ДЛЯ НАВИГАЦИИ (Компактный)
+# СЕРИАЛИЗАТОР ЧАСТЕЙ УРОКА ДЛЯ НАВИГАЦИИ (Компактный)
 class LessonPartShortSerializer(serializers.ModelSerializer):
     class Meta:
         model = LessonPart
@@ -58,7 +65,7 @@ class LessonListSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'user', 'parts_count', 'is_published', 'created_at']
 
 
-# 7. СЕРИАЛИЗАТОР ДЕТАЛЕЙ УРОКА (Выдает метаданные урока + список его частей для меню)
+# СЕРИАЛИЗАТОР ДЕТАЛЕЙ УРОКА (Выдает метаданные урока + список его частей для меню)
 class LessonDetailSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='created_by.username')
     # Используем созданный выше компактный сериализатор частей
@@ -68,7 +75,6 @@ class LessonDetailSerializer(serializers.ModelSerializer):
         model = Lesson
         fields = ['id', 'title', 'user', 'is_published', 'parts', 'created_at']
 
-from .models import User
 
 class RegisterSerializer(serializers.ModelSerializer):
     # Поле пароля делаем только для записи, чтобы оно не возвращалось в JSON
@@ -86,3 +92,8 @@ class RegisterSerializer(serializers.ModelSerializer):
             password=validated_data['password']
         )
         return user
+# СЕРИАЛИЗАТОР ПОЛЬЗОВАТЕЛЯ ПО ID
+class UserDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'is_staff', 'date_joined']

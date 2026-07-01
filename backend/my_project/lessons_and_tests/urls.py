@@ -4,6 +4,7 @@ from . import views # Ваш привычный стиль импорта
 
 urlpatterns = [
     # Авторизация (Вход) — возвращает access и refresh токены
+    # TODO ОТСЛЕДИ ЧЕРТОВЫ NAME
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     
     # Обновление access-токена с помощью refresh-токена
@@ -19,6 +20,9 @@ urlpatterns = [
     path('parts/submit-test/', views.submit_test_answer_view, name='submit-test'),
 
     # Профиль
-    path('profile/', views.profile_view, name='user-profile'),
+    # пределано,
+    # path('profile/', views.profile_view, name='user-profile'),
+    path('profile/<int:pk>/', views.user_detail_view, name='user-detail'),
+
     
 ]
