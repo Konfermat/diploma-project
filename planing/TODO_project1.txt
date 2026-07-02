@@ -15,12 +15,11 @@
 
     ссылки 
         # frontend
-        https://share.google/aimode/HCadbmeRfB14Rxjq6
-
-        https://share.google/aimode/dcSqIhz4ulx6WJM7j        
-
         https://share.google/aimode/RQoOiWi5reO0DrZ2A
 
+        https://share.google/aimode/Om2cKA8DZZAUmVN07
+
+        https://share.google/aimode/BrqjQzKsE0k58cS2X
 
         # backend вход
         https://share.google/aimode/TtAIesPYHS3crEj6b
@@ -30,10 +29,13 @@
         
 
     TODO now
-        руты profile и profile/<123>/
-        # велоспиед?
         руты с ошибками routes/errors/404.jsx
-        # починка Login.jsx 
+        за выходные сделать основной функционал сайта
+            lessons/ все уроки
+            lesson/<id>/preview/ конкретный урок предпросмотр
+            lesson/<id>/session/ 
+            # реализовать session суть которой заключается в проверки текущего прохождения
+
 
 #####################################################################
 сделано
@@ -67,7 +69,6 @@
     Цель дипломного проекта:
         Cоздание LMS-платформы (Learning Management System) 
         позволяющая организовывать учебный процесс с помощью текстового материала и тестов.
-        Проверка себя как программиста.
 
     Основные функции проекта.
         Создание "Уроков".

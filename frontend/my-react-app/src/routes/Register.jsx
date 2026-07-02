@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // Добавили useNavigate для редиректа после регистрации
+import API from '../api/axios'; // Импортируем твой настроенный инстанс Axios
 
 export default function Register() {
-  // Добавили first_name и last_name в состояние. Поля необязательные, поэтому в начале пустые строки
+  const navigate = useNavigate(); // Инициализируем хук навигации
+  
   const [data, setData] = useState({ 
     username: '', 
     first_name: '', 
@@ -11,9 +13,10 @@ export default function Register() {
     password: '', 
     confirmPassword: '' 
   });
+  
   const [errors, setErrors] = useState({});
+  const [serverErrors, setServerErrors] = useState({}); // Состояние для ошибок валидации от Django
 
-  // Первый аргумент — это имя поля (name), а не конкретно username
   const validate = (name, value, allData) => {
     let errorText = '';
 
@@ -41,21 +44,47 @@ export default function Register() {
   };
 
   const handleChange = (e) => {
-    // ВАЖНО: деструктурируем именно 'name' из e.target, так как это имя HTML-атрибута
     const { name, value } = e.target;
     const updatedData = { ...data, [name]: value };
     setData(updatedData);
     validate(name, value, updatedData);
+    
+    // Очищаем ошибку бэкенда для конкретного поля при начале ввода нового значения
+    if (serverErrors[name]) {
+      setServerErrors(prev => ({ ...prev, [name]: '' }));
+    }
   };
 
-  const handleSubmit = (e) => {
+  // Метод отправки данных на бэкенд
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Данные для отправки в DRF:', data);
-    alert('Успешная регистрация!');
+    setServerErrors({}); // Сбрасываем старые серверные ошибки перед новым запросом
+
+    // Формируем чистый объект для DRF (без confirmPassword)
+    const { confirmPassword, ...payload } = data;
+
+    try {
+      // 1. Делаем POST-запрос на твой эндпоинт регистрации (замени 'register/' на свой урл, если он другой)
+      const response = await API.post('register/', payload);
+
+      if (response.status === 201 || response.status === 200) {
+        alert('Регистрация прошла успешно! Теперь вы можете войти.');
+        navigate('/login'); // Перенаправляем пользователя на страницу логина
+      }
+    } catch (err) {
+      console.error('Ошибка регистрации:', err);
+      
+      // 2. Обрабатываем ошибки валидации от Django REST Framework
+      if (err.response && err.response.data) {
+        // DRF обычно возвращает ошибки в формате { поле: ["Текст ошибки"] }
+        setServerErrors(err.response.data);
+      } else {
+        // На случай падения самого сервера
+        setServerErrors({ non_field_errors: 'Произошла непредвиденная ошибка на сервере. Попробуйте позже.' });
+      }
+    }
   };
 
-  // Кнопка заблокирована, если обязательные поля DRF пусты или есть ошибки.
-  // first_name и last_name в AbstractUser по умолчанию могут быть пустыми, поэтому здесь их не проверяем на обязательность
   const isFormInvalid = 
     !data.username || !data.email || !data.password || !data.confirmPassword ||
     Object.values(errors).some(error => error !== '');
@@ -63,10 +92,20 @@ export default function Register() {
   return (
     <div className="container">
       <h2>Регистрация</h2>
+      
+      {/* Вывод общих ошибок бэкенда, не привязанных к конкретным полям */}
+      {serverErrors.non_field_errors && (
+        <div className="error-summary" style={{color: 'red', marginBottom: '10px'}}>
+          {serverErrors.non_field_errors}
+        </div>
+      )}
+
       <form onSubmit={handleSubmit}>
         <div>
           <input type="text" name="username" placeholder="Имя пользователя (логин)" value={data.username} onChange={handleChange} required />
           {errors.username && <span className="error-text">{errors.username}</span>}
+          {/* Ошибка уникальности юзернейма от Django */}
+          {serverErrors.username && <span className="error-text" style={{color: 'red'}}>{serverErrors.username}</span>}
         </div>
 
         <div>
@@ -82,11 +121,14 @@ export default function Register() {
         <div>
           <input type="email" name="email" placeholder="Email" value={data.email} onChange={handleChange} required />
           {errors.email && <span className="error-text">{errors.email}</span>}
+          {/* Ошибка уникальности email от Django */}
+          {serverErrors.email && <span className="error-text" style={{color: 'red'}}>{serverErrors.email}</span>}
         </div>
 
         <div>
           <input type="password" name="password" placeholder="Пароль" value={data.password} onChange={handleChange} required />
           {errors.password && <span className="error-text">{errors.password}</span>}
+          {serverErrors.password && <span className="error-text" style={{color: 'red'}}>{serverErrors.password}</span>}
         </div>
 
         <div>
@@ -100,3 +142,4 @@ export default function Register() {
     </div>
   );
 }
+

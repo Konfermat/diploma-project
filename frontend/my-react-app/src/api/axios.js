@@ -1,3 +1,4 @@
+// настроенный Axios-клиент с интерцептором
 import axios from 'axios';
 
 const API = axios.create({

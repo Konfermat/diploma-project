@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; 
+import { jwtDecode } from 'jwt-decode'; // 1. Импортируем декодер
 import API from '../api/axios'; 
 
 export default function Login() {
@@ -43,7 +44,14 @@ export default function Login() {
         localStorage.setItem('access_token', response.data.access);
         localStorage.setItem('refresh_token', response.data.refresh);
         
-        navigate('/profile');
+        // 2. Декодируем access токен, чтобы прочитать Payload
+        const decoded = jwtDecode(response.data.access);
+        
+        // 3. Достаем user_id (в Simple JWT поле обычно называется user_id)
+        const userId = decoded.user_id;
+        
+        // 4. Динамически перенаправляем на нужный ID
+        navigate(`/profile/${userId}/`);
       }
     } catch (err) {
       console.error(err);

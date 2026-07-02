@@ -1,19 +1,43 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import API from '../api/axios'; // Наш настроенный Axios-клиент с интерцептором
+import { useParams, useNavigate } from 'react-router-dom'; // Изменили redirect на useNavigate
+import { jwtDecode } from 'jwt-decode'; // Импортируем декодер токена
+import API from '../api/axios'; 
 
 export default function Profile() {
-  const { id } = useParams(); // Извлекаем id из URL маршрута (/profile/:id)
+  const { id } = useParams(); // Извлекаем id из URL
+  const navigate = useNavigate(); // Хук для редиректов
   const [user, setUser] = useState(null);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    // Сбрасываем старые данные и ошибку при смене id (например, перешли с profile/1 на profile/2)
+    const token = localStorage.getItem('access_token');
+
+    // 1. ПРОВЕРКА НАЛИЧИЯ ТОКЕНА
+    if (!token) {
+      navigate('/login', { replace: true });
+      return;
+    }
+
+    // 2. ОБРАБОТКА МАРШРУТА БЕЗ ID (/profile)
+    if (!id) {
+      try {
+        const decoded = jwtDecode(token);
+        const myId = decoded.user_id; // Достаем ID текущего пользователя
+        navigate(`/profile/${myId}/`, { replace: true }); // Перенаправляем на /profile/{id}/
+      } catch (err) {
+        console.error("Ошибка декодирования токена:", err);
+        localStorage.clear();
+        navigate('/login', { replace: true });
+      }
+      return; // Останавливаем выполнение текущего эффекта, так как пошел редирект
+    }
+
+    // Сбрасываем старые данные и ошибку при смене id
     setUser(null);
     setError('');
 
-    // Делаем динамический запрос к DRF, подставляя id
-    API.get(`profile/${id}/`)
+    // 3. ЗАПРОС К БЭКЕНДУ ДЛЯ КОНКРЕТНОГО ID
+    API.get(`user_detail/${id}/`)
       .then(response => {
         setUser(response.data); // Сохраняем данные профиля
       })
@@ -29,12 +53,12 @@ export default function Profile() {
           setError('Ошибка загрузки данных профиля. Попробуйте позже.');
         }
         
-        // Очистку токенов мы убрали — теперь её автоматически делает Axios Interceptor!
+        // Очистку токенов при 401 ошибке за нас делает Axios Interceptor!
       });
-  }, [id]); // useEffect сработает заново каждый раз, когда изменится id в URL
+  }, [id, navigate]); // Эффект сработает при изменении id или функции навигации
 
-  // 1. Состояние загрузки
-  if (!user && !error) {
+  // 1. Состояние загрузки (или ожидания редиректа)
+  if (!id || (!user && !error)) {
     return (
       <div className='container'>
         <h2>Загрузка профиля...</h2>

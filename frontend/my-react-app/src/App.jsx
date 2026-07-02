@@ -3,6 +3,7 @@ import ProtectedRoute from './components/ProtectedRoute.jsx';
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { useState, useEffect } from 'react'
 
+import Home from './routes/Home.jsx'
 import Template from './routes/Template.jsx'
 import Register from './routes/Register.jsx'
 import Profile from './routes/Profile.jsx'
@@ -39,14 +40,13 @@ export default function App() {
 
       <Routes>
         {/* Публичные руты */}
-        <Route path="/" element={ <Template /> } />
+        <Route path="/" element={ <Home /> } />
         <Route path="/template" element={ <Template /> } />
         <Route path="/register" element={ <Register /> } />
         <Route path="/login" element={ <Login /> } />
 
-        {/* <Route path="/test" element={ <Test /> } /> */}
-        
-        {/* Приватныые руты */}
+        <Route path="/profile" element={ <Profile /> } />
+        {/* Приватные руты */}
         <Route path="/profile/:id" element={ 
           <ProtectedRoute>
             <Profile /> 
