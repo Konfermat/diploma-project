@@ -24,7 +24,7 @@
   --text-primary: #ffffff;   
   --text-secondary: #aaaaaa; 
   --border-color: #444444;   
-  --color-primary: #375a7f;  
+  --color-primary: #5182b8;  
   --color-hover: #2b4764;
   --color-focus: rgba(55, 90, 127, 0.3);
   --input-placeholder: #ffffff;
@@ -34,28 +34,6 @@
 /* Добавим плавность перехода при смене темы */
 body, .container, input, button, p {
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-}
-
-/* Кнопка переключения темы (стили) */
-.theme-toggle {
-  background-color: var(--bg-card);
-  position: static;
-  cursor: pointer;
-  color: var(--text-primary);
-  border: 1px solid var(--border-color);
-  border-radius: 20px;
-  font-weight: 600;
-}
-
-/* Используем переменные через функцию var() */
-body-copy {
-  margin: 0;
-  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  background-color: var(--bg-main); /* Используем переменную */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
 }
 
 /* Используем переменные через функцию var() */
@@ -192,6 +170,7 @@ header h3 {
   align-items: center;
 }
 
+/* TO DEL? */
 /* Стили для кнопки темы внутри хедера */
 .theme-toggle {
   padding: 8px 16px;
@@ -203,6 +182,8 @@ header h3 {
   font-weight: 600;
   transition: all 0.2s ease;
 }
+
+
 
 /* ==========================================================================
    СТИЛИ ДЛЯ ОШИБОК ВАЛИДАЦИИ ФОРМЫ
@@ -258,6 +239,7 @@ button[type="submit"]:disabled {
   letter-spacing: 0.5px;
 }
 
+/* КНОПКИ */
 /* Группа кнопок навигации */
 .nav-group {
   display: flex;
@@ -313,4 +295,6 @@ button[type="submit"]:disabled {
 .logout-btn:hover {
   background-color: rgba(231, 76, 60, 0.1);
 }
+
+
 

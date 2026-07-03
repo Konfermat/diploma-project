@@ -52,9 +52,15 @@ export default function Header() {
         <Link to="/"><h3>MyDRFApp</h3></Link>
       </div>
 
-      <button className="theme-toggle" onClick={toggleTheme}>
-        {isDarkTheme ? 'Светлый стиль' : 'Темный стиль'}
-      </button>
+      <nav className="nav-group">
+        <button className="nav-btn register-btn" onClick={toggleTheme}>
+          {isDarkTheme ? 'Светлый стиль' : 'Темный стиль'}
+        </button>
+
+        <Link to="/lessons" className="body nav-btn register-btn">Уроки</Link>
+                
+      </nav>
+
 
       <nav className="header-nav">
         {isLoggedIn ? (

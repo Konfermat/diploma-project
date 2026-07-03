@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { useState, useEffect } from 'react'
 
 import Home from './routes/Home.jsx'
+import Lessons from './routes/Lessons.jsx'
 import Template from './routes/Template.jsx'
 import Register from './routes/Register.jsx'
 import Profile from './routes/Profile.jsx'
@@ -44,6 +45,7 @@ export default function App() {
         <Route path="/template" element={ <Template /> } />
         <Route path="/register" element={ <Register /> } />
         <Route path="/login" element={ <Login /> } />
+        <Route path="/lessons" element={ <Lessons /> } />
 
         <Route path="/profile" element={ <Profile /> } />
         {/* Приватные руты */}

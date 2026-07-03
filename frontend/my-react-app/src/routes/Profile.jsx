@@ -12,13 +12,13 @@ export default function Profile() {
   useEffect(() => {
     const token = localStorage.getItem('access_token');
 
-    // 1. ПРОВЕРКА НАЛИЧИЯ ТОКЕНА
+    // ПРОВЕРКА НАЛИЧИЯ ТОКЕНА
     if (!token) {
       navigate('/login', { replace: true });
       return;
     }
 
-    // 2. ОБРАБОТКА МАРШРУТА БЕЗ ID (/profile)
+    // ОБРАБОТКА МАРШРУТА БЕЗ ID (/profile)
     if (!id) {
       try {
         const decoded = jwtDecode(token);
@@ -36,7 +36,7 @@ export default function Profile() {
     setUser(null);
     setError('');
 
-    // 3. ЗАПРОС К БЭКЕНДУ ДЛЯ КОНКРЕТНОГО ID
+    // ЗАПРОС К БЭКЕНДУ ДЛЯ КОНКРЕТНОГО ID
     API.get(`user_detail/${id}/`)
       .then(response => {
         setUser(response.data); // Сохраняем данные профиля
@@ -57,7 +57,7 @@ export default function Profile() {
       });
   }, [id, navigate]); // Эффект сработает при изменении id или функции навигации
 
-  // 1. Состояние загрузки (или ожидания редиректа)
+  // Состояние загрузки (или ожидания редиректа)
   if (!id || (!user && !error)) {
     return (
       <div className='container'>
@@ -66,7 +66,7 @@ export default function Profile() {
     );
   }
 
-  // 2. Состояние ошибки
+  // Состояние ошибки
   if (error) {
     return (
       <div className='container'>
@@ -75,7 +75,7 @@ export default function Profile() {
     );
   }
 
-  // 3. Успешный рендеринг профиля
+  // Успешный рендеринг профиля
   return (
     <div className='container'>
       <h2>Профиль аккаунта</h2>
