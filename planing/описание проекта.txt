@@ -83,7 +83,7 @@
         через которое общаются сервер и клиент.
 
     База данных:
-        SQLite — простая в освоении и легковестная СУБД. Для разработки и тестирования.
+        SQLite — простая в освоении и легковесная СУБД. Для разработки и тестирования.
 
     Вопросы:
         Почему Lite?
@@ -141,6 +141,9 @@
 
     https://github.com/mui/material-ui/blob/master/docs/data/material/getting-started/templates/dashboard/components/Header.js
         Рефы для React компонентов.
+
+    https://v4.mui.com/ru/getting-started/templates/checkout/
+        Реакт темплейты
     
     https://codepen.io/
         Хороший сайт с рефами проектов. Видел там как то игру про курицу которая через дорогу перебегает.
@@ -148,5 +151,5 @@
     https://roadmap.sh/
         реф для карты
     
-OWO https://share.google/aimode/TeWpamKXizcJKwcqx
+    https://share.google/aimode/TeWpamKXizcJKwcqx
 
