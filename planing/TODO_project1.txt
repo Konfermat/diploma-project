@@ -24,7 +24,6 @@
         # backend вход
         https://share.google/aimode/TtAIesPYHS3crEj6b
 
-        https://share.google/aimode/wcHNIGsIQ0lu3NXEs
 
         
 

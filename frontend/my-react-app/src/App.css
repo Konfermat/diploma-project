@@ -1,8 +1,4 @@
 
-
-
-
-
 /* Переменные по умолчанию (Светлая тема) */
 :root {
   --bg-main: #ecf1fc;
@@ -13,44 +9,37 @@
   --color-primary: #007bff;
   --color-hover: #0056b3;
   --color-focus: rgba(0, 123, 255, 0.15);
-  --input-placeholder: #ffffff;
-  --box-shadow: #AAAAAA;
+  --bg-input: #ffffff;          /* ИСПРАВЛЕНО: Фоновые цвета отдельно */
+  --text-btn: #ffffff;           /* ИСПРАВЛЕНО: Цвет текста на кнопках */
+  --box-shadow: rgba(0, 0, 0, 0.1); /* ИСПРАВЛЕНО: Полупрозрачная тени */
 }
 
 /* Переменные для Тёмной темы (перезаписываем значения) */
 :root.dark {
-  --bg-main: #375a7f;        
-  --bg-card: #173444;        
+  --bg-main: #1a252f;            /* ИСПРАВЛЕНО: Сделано темнее для контраста */
+  --bg-card: #2c3e50;        
   --text-primary: #ffffff;   
-  --text-secondary: #aaaaaa; 
+  --text-secondary: #e7e7e7; 
   --border-color: #444444;   
-  --color-primary: #5182b8;  
-  --color-hover: #2b4764;
-  --color-focus: rgba(55, 90, 127, 0.3);
-  --input-placeholder: #ffffff;
-  --box-shadow: #f0f0f0;
+  --color-primary: #3498db;  
+  --color-hover: #2980b9;
+  --color-focus: rgba(52, 152, 219, 0.3);
+  --bg-input: #34495e;           /* ИСПРАВЛЕНО: Темный инпут в темной теме */
+  --text-btn: #ffffff;
+  --box-shadow: rgba(255, 255, 255, 0.4); /* ИСПРАВЛЕНО: Мягкая темная тень */
 }
 
-/* Добавим плавность перехода при смене темы */
 body, .container, input, button, p {
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 /* Используем переменные через функцию var() */
 body {
   margin: 0;
   font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  background-color: var(--bg-main); /* Используем переменную */
-  justify-content: center;
-  align-items: center;
+  background-color: var(--bg-main);
+  color: var(--text-primary); /* ДОБАВЛЕНО для наследования цвета текста */
   min-height: 100vh;
-}
-
-.app-container {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .container {
@@ -63,6 +52,27 @@ body {
   max-width: 400px;
   box-sizing: border-box;
 }
+
+.text-box{
+  background-color: var(--bg-card);
+  padding: 40px;
+  margin: 100px auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px var(--box-shadow);
+  width: 80%;
+  box-sizing: border-box;
+}
+
+.list-box{
+  background-color: var(--bg-card);
+  padding: 1px 20px 20px 20px;
+  margin: 100px auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px var(--box-shadow);
+  width: 80%;
+  box-sizing: border-box;
+}
+
 
 .container h2 {
   margin-top: 0;
@@ -86,7 +96,8 @@ input {
   font-size: 16px;
   box-sizing: border-box;
   transition: border-color 0.2s, box-shadow 0.2s;
-  background-color: var(--input-placeholder);
+  background-color: var(--bg-input);
+  color: var(--text-primary); 
 }
 
 input:focus {
@@ -96,10 +107,9 @@ input:focus {
 }
 
 
-
 button[type="submit"] {
   background-color: var(--color-primary);
-  color: var(--input-placeholder);
+  color: var(--text-btn);
   border: none;
   border-radius: 8px;
   padding: 12px;
@@ -275,7 +285,7 @@ button[type="submit"]:disabled {
 
 /* Кнопка Регистрация (Залитая основным цветом) */
 .register-btn {
-  color: var(--input-placeholder); /* Белый текст */
+  color: var(--text-btn);
   background-color: var(--color-primary);
   border: 1px solid var(--color-primary);
 }
@@ -298,3 +308,147 @@ button[type="submit"]:disabled {
 
 
 
+/* ==========================================================================
+   АДАПТИВНЫЙ HEADER (БУРГЕР-МЕНЮ)
+   ========================================================================== */
+
+/* Обертка меню для десктопа (ведет себя как обычный контейнер) */
+.header-menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-grow: 1;
+  margin-left: 40px;
+}
+
+/* Кнопка бургера скрыта по умолчанию на компьютерах */
+.burger-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 24px;
+  height: 18px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1001;
+}
+
+/* Три полоски бургера */
+.burger-toggle span {
+  width: 100%;
+  height: 2px;
+  background-color: var(--text-primary);
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Анимация превращения в крестик при активации */
+.burger-toggle.open span:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.burger-toggle.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.burger-toggle.open span:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+/* Медиа-запрос для мобильных устройств и масштабирования */
+@media (max-width: 768px) {
+  /* Показываем иконку бургера */
+  .burger-toggle {
+    display: flex;
+  }
+
+  /* Превращаем навигацию в выезжающую шторку */
+  .header-menu {
+    position: fixed;
+    top: 0;
+    right: -100%; /* Прячем меню за правый край экрана */
+    width: 280px;
+    height: 100vh;
+    background-color: var(--bg-card);
+    border-left: 1px solid var(--border-color);
+    box-shadow: -5px 0 25px rgba(0, 0, 0, 0.1);
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    padding: 80px 24px 40px 24px;
+    gap: 32px;
+    margin-left: 0;
+    transition: right 0.3s ease-in-out;
+    z-index: 1000;
+  }
+
+  /* Показываем меню, когда добавлен класс .active */
+  .header-menu.active {
+    right: 0;
+  }
+
+  /* Перестраиваем кнопки внутри групп вертикально */
+  .nav-group {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    gap: 16px;
+  }
+
+  /* Растягиваем кнопки на всю ширину мобильного меню */
+  .nav-btn {
+    width: 100%;
+    padding: 12px; /* Чуть увеличили отступы для удобного нажатия пальцем */
+  }
+}
+
+/* Панель с кнопками */
+.font-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* Кнопки изменения шрифта */
+.font-btn {
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.font-btn:hover {
+  background-color: var(--color-focus);
+  border-color: var(--color-primary);
+}
+
+/* Индикатор текущего размера */
+.font-indicator {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-left: auto; /* Прижимает размер к правому краю */
+}
+
+/* Применение динамического размера внутри text-box */
+.text-box p {
+  /* Если переменная задана, берем её. Если нет — стандартные 16px */
+  font-size: var(--dynamic-font-size, 16px); 
+  line-height: 1.6; /* Комфортное расстояние между строками */
+}
+
+.text-box h2 {
+  /* Заголовок всегда будет пропорционально больше текста (на 8px) */
+  font-size: calc(var(--dynamic-font-size, 16px) + 8px);
+  margin-top: 24px;
+  margin-bottom: 12px;
+}

@@ -151,5 +151,28 @@
     https://roadmap.sh/
         реф для карты
     
-    https://share.google/aimode/TeWpamKXizcJKwcqx
 
+
+
+
+# frontend
+https://share.google/aimode/c07TnBb4RoiOqcslR
+
+# backend&
+https://share.google/aimode/v2kJZWP5ba9y5SHKY
+
+lesson/123/text
+Урок Python
+    Введение
+        Текст1
+        Текст2
+        Текст3
+        Тест1
+            Тест опция1
+            Тест опция2
+        Тест2
+        Тест3
+        
+    тема 1
+    тема 2
+    Заключение

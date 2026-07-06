@@ -35,6 +35,7 @@ class TextSerializer(serializers.ModelSerializer):
         fields = ['id', 'lesson_material', 'order']
 
 
+
 # СЕРИАЛИЗАТОР ДЕТАЛЕЙ ЧАСТИ УРОКА (Тексты + Тесты для центрального прямоугольника)
 class LessonPartDetailSerializer(serializers.ModelSerializer):
     # Объединяем тексты и тесты внутри одной части урока через их related_name

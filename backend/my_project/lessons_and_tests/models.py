@@ -18,6 +18,9 @@ class Lesson(models.Model):
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='lessons')
     is_published = models.BooleanField(default=False)
 
+    def __str__(self):
+        return self.title
+
 class LessonPart(models.Model):
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name='parts')
     title = models.CharField(max_length=255, verbose_name="Название части")

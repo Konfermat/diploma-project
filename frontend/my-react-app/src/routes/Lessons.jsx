@@ -3,17 +3,13 @@
 export default function Lessons() {
 
   return (
-    <div className="container">
+    <div className="list-box">
       <h2>Список уроков</h2>
       <p>Матматика</p>
       <p>Матматика</p>
       <p>Матматика</p>
-      {/* фыва
-      Математика(Lesson)
-        
-      Русский язык
-      */}
     </div>
 
   );
 } 
+
