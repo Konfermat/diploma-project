@@ -1,6 +1,6 @@
 from django.utils import lorem_ipsum
 from django.core.management.base import BaseCommand
-from lessons_and_tests.models import User, Test
+from lessons_and_tests.models import User, Test, Lesson
 
 
 class Command(BaseCommand):
@@ -19,10 +19,13 @@ class Command(BaseCommand):
                 for i in tests:
                     print(i.id, i.question)
 
-            
+            def example3():
+                lessons = Lesson.objects.all()
+                print(lessons)
             # execution
             # example1()
-            example2()
+            # example2()
+            example3()
 
 
 

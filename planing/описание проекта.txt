@@ -158,8 +158,12 @@
 # frontend
 https://share.google/aimode/c07TnBb4RoiOqcslR
 
-# backend&
+https://share.google/aimode/9pfBc2B89MGeuphqS
+
+# backend
 https://share.google/aimode/v2kJZWP5ba9y5SHKY
+
+https://share.google/aimode/nfof688wgXd5DZV1C
 
 lesson/123/text
 Урок Python

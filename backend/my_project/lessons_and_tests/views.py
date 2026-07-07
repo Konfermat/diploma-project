@@ -47,13 +47,12 @@ def user_detail_view(request, pk):
 
 # ПОЛУЧЕНИЕ КОНТЕНТА ЧАСТИ УРОКА (Функция)
 @api_view(['GET'])
-@permission_classes([IsAuthenticatedOrReadOnly])
+# Потом пмишены настрою
+# @permission_classes([IsAuthenticatedOrReadOnly])
 def lesson_part_detail_view(request, pk):
     """
     Возвращает тексты и тесты для конкретной части урока.
-    Сортировка внутри списков происходит автоматически благодаря Meta моделей.
     """
-    # Оптимизируем запросы через prefetch_related, чтобы избежать проблемы N+1
     lesson_part = get_object_or_404(
         LessonPart.objects.prefetch_related('texts', 'tests__options'), 
         pk=pk
@@ -62,7 +61,6 @@ def lesson_part_detail_view(request, pk):
     # Передаем объект в сериализатор и отдаем JSON
     serializer = LessonPartDetailSerializer(lesson_part)
     return Response(serializer.data, status=status.HTTP_200_OK)
-
 
 # ПРОВЕРКА ОТВЕТА НА ТЕСТ (Функция)
 @api_view(['POST'])
@@ -112,9 +110,6 @@ def lesson_list_view(request):
     Возвращает список всех опубликованных уроков для главной страницы.
     Уроки отсортированы: сначала новые (по дате создания).
     """
-    # Оптимизация: 
-    # 1. select_related('user') сразу подгружает авторов (избегаем N+1 для юзеров)
-    # 2. annotate(parts_count=Count('parts')) считает количество частей прямо на уровне базы данных SQL
     lessons = Lesson.objects.filter(is_published=True)\
                             .select_related('created_by')\
                             .annotate(parts_count=Count('parts'))\
