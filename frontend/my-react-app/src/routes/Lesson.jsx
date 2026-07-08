@@ -10,7 +10,7 @@ export default function Lesson() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
 
-    // Начальный размер шрифта в пикселях (для базового текста)
+  // Начальный размер шрифта в пикселях (для базового текста)
   const [fontSize, setFontSize] = useState(16);
   // Функции для увеличения и уменьшения с границами (чтобы текст не стал слишком мелким или огромным)
   const increaseFont = () => setFontSize(prev => Math.min(prev + 2, 28)); // Максимум 28px

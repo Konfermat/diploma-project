@@ -14,31 +14,16 @@
         протухшие токены, как с ними работать?
 
     ссылки 
-        # frontend
-        https://share.google/aimode/RQoOiWi5reO0DrZ2A
+        https://share.google/aimode/Yo87HzyvIQ08TbAcM
 
-        https://share.google/aimode/Om2cKA8DZZAUmVN07
-
-        https://share.google/aimode/BrqjQzKsE0k58cS2X
-
-        # backend вход
-        https://share.google/aimode/TtAIesPYHS3crEj6b
-
+        https://share.google/aimode/cgbP9EYXUmEWJhR3q
 
         
 
     TODO now
+        Нужны руты ошибок?
         руты с ошибками routes/errors/404.jsx
-        за выходные сделать основной функционал сайта
-            lessons/ все уроки
-                в начале списка будет выбран текущий урок
-                список уроков
-                урок разваорачивается с кратким описанием и кнопкой
-                    продолжить или выбрать этот урок вместо текущего 
-            lesson/<id>/text/ конкретный урок предпросмотр
-            lesson/<id>/test/
-            # реализовать session суть которой заключается в проверки текущего прохождения
-
+        Что 
 
 #####################################################################
 сделано

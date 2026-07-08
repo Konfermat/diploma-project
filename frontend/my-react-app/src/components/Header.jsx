@@ -81,6 +81,7 @@ export default function Header() {
             {isDarkTheme ? 'Светлый стиль' : 'Темный стиль'}
           </button>
           <Link to="/lessons" className="body nav-btn register-btn">Уроки</Link>
+          <Link to="/tests" className="body nav-btn register-btn">Тесты</Link>
         </nav>
 
         <nav className="header-nav">

@@ -11,6 +11,7 @@ import Register from './routes/Register.jsx'
 import Profile from './routes/Profile.jsx'
 import Login from './routes/Login.jsx'
 import Test from './routes/Test.jsx'
+import Tests from './routes/Tests.jsx'
 
 import Header from './components/Header.jsx'
 import './App.css'
@@ -48,6 +49,7 @@ export default function App() {
         <Route path="/login" element={ <Login /> } />
         <Route path="/lessons" element={ <Lessons /> } />
         <Route path="/lesson/:id" element={ <Lesson /> } />
+        <Route path="/tests" element={ <Tests /> } />
 
         <Route path="/profile" element={ <Profile /> } />
         {/* Приватные руты */}
