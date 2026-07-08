@@ -165,6 +165,9 @@ https://share.google/aimode/v2kJZWP5ba9y5SHKY
 
 https://share.google/aimode/nfof688wgXd5DZV1C
 
+
+https://share.google/aimode/Yo87HzyvIQ08TbAcM
+
 lesson/123/text
 Урок Python
     Введение
@@ -180,3 +183,5 @@ lesson/123/text
     тема 1
     тема 2
     Заключение
+
+
