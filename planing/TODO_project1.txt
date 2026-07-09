@@ -14,16 +14,12 @@
         протухшие токены, как с ними работать?
 
     ссылки 
-        https://share.google/aimode/Yo87HzyvIQ08TbAcM
-
-        https://share.google/aimode/cgbP9EYXUmEWJhR3q
-
+        сломались
         
 
     TODO now
         Нужны руты ошибок?
         руты с ошибками routes/errors/404.jsx
-        Что 
 
 #####################################################################
 сделано
