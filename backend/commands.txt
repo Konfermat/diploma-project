@@ -8,3 +8,7 @@ py manage.py runserver
 
 python manage.py check # проверка на наличие ошибок?
 python manage.py createsuperuser
+
+requirements.txt
+
+pip freeze > requirements.txt
